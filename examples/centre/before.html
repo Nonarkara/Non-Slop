@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Centred dashboard</title>
+<style>
+@font-face{font-family:Inter;src:url("../fonts/inter-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:Inter;src:url("../fonts/inter-700.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#f8fafc;color:#0f172a}
+body{font-family:Inter,sans-serif}
+.stage{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px 16px}
+h1{margin:0 0 8px;font-size:40px}
+.sub{margin:0 0 12px;max-width:36ch;color:#334155}
+button{font:inherit;border-radius:12px;padding:12px 18px;margin:6px;min-height:44px}
+.primary{background:#0f172a;color:#ffffff;border:0}
+.ghost{background:#ffffff;color:#0f172a;border:1px solid #cbd5e1}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;width:min(880px,100%);margin-top:18px}
+.card{background:#ffffff;border-radius:16px;box-shadow:0 10px 24px rgba(15,23,42,.12);padding:20px 12px}
+.card strong{display:block;font-size:28px;margin-top:6px}
+h2{margin:0;font-size:15px}
+button:focus-visible{outline:2px solid #0f172a;outline-offset:3px}
+@media (max-width:640px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="stage">
+<section class="text-center">
+  <h1>Supercharge the morning brief</h1>
+  <p class="sub">Seamlessly unlock Satun, Trang and Kanchanaburi from the centre of the page.</p>
+  <button class="primary">Get Started</button>
+  <button class="ghost">Learn More</button>
+</section>
+<section class="grid grid-cols-3">
+  <div class="card rounded-2xl shadow-lg p-6 bg-white"><h2>🚀 Over bank</h2><strong>22</strong></div>
+  <div class="card rounded-2xl shadow-lg p-6 bg-white"><h2>🔒 High water</h2><strong>53</strong></div>
+  <div class="card rounded-2xl shadow-lg p-6 bg-white"><h2>⚡ Satun</h2><strong>134</strong></div>
+</section>
+</div>
+<footer>
+  <p>Everything on the stage is centred: the headline, the two buttons and the three equal cards. The same morning brief is set on the corrected page with the count on the left and the provinces in a list.</p>
+  <p>Those figures are the FloodDash press brief at 07:06 ICT on 19 October 2026: 22 gauges over the bank, 53 at high water, and 134 mm of rain in Satun. Follow DDPM and municipal orders.</p>
+</footer>
+</body>
+</html>

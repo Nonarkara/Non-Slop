@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scores of these examples</title>
+<style>
+@font-face{font-family:"Jost";src:url("../fonts/jost-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Jost";src:url("../fonts/jost-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e7eeea;color:#1a2332}
+body{font-family:"Jost",sans-serif;font-size:18px;line-height:1.4}
+main{padding:28px 28px 36px;max-width:920px}
+h1{margin:0 0 6px;font-size:32px;font-weight:600;letter-spacing:-0.02em;max-width:24ch}
+h2{margin:22px 0 8px;font-size:18px;font-weight:600}
+.face,.note{margin:0 0 12px;max-width:62ch}
+.row{display:grid;grid-template-columns:11rem 1fr 5.5rem;align-items:center;gap:10px;margin:0 0 6px}
+.name{font-size:16px}
+.track{height:14px;background:transparent;border-bottom:1px solid #b7c4bc}
+.bar{display:block;height:14px}
+.slop{background:#9b1c3c}
+.clean{background:#1a2332}
+.n{font-size:16px;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<main>
+  <h1>These pages, measured here</h1>
+  <p class="face">Measured 19 Oct 2026 with this repo's scanner. Crimson is the before page. Ink is the after page. A zero is a hairline, not a fake minimum. The two charts use different scales.</p>
+
+  <h2>Static scan. SLOP at 8 or more.</h2>
+  <div class="row"><span class="name">Cards, before</span><span class="track"><span class="bar slop" style="width:33.33%"></span></span><span class="n">9 SLOP</span></div>
+  <div class="row"><span class="name">Cards, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Command, before</span><span class="track"><span class="bar slop" style="width:100%"></span></span><span class="n">27 SLOP</span></div>
+  <div class="row"><span class="name">Command, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Type, before</span><span class="track"><span class="bar slop" style="width:29.63%"></span></span><span class="n">8 SLOP</span></div>
+  <div class="row"><span class="name">Type, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Centre, before</span><span class="track"><span class="bar slop" style="width:44.44%"></span></span><span class="n">12 SLOP</span></div>
+  <div class="row"><span class="name">Centre, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Canal, before</span><span class="track"><span class="bar slop" style="width:51.85%"></span></span><span class="n">14 SLOP</span></div>
+  <div class="row"><span class="name">Canal, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <p class="note">Scale 0 to 27, the command-centre page. Points are distinct rules: P0 counts 3, P1 counts 2, P2 counts 1.</p>
+
+  <h2>Rendered page. SLOP at 6 or more.</h2>
+  <div class="row"><span class="name">Cards, before</span><span class="track"><span class="bar slop" style="width:50%"></span></span><span class="n">5 REVIEW</span></div>
+  <div class="row"><span class="name">Cards, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Command, before</span><span class="track"><span class="bar slop" style="width:100%"></span></span><span class="n">10 SLOP</span></div>
+  <div class="row"><span class="name">Command, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Type, before</span><span class="track"><span class="bar slop" style="width:50%"></span></span><span class="n">5 REVIEW</span></div>
+  <div class="row"><span class="name">Type, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Centre, before</span><span class="track"><span class="bar slop" style="width:100%"></span></span><span class="n">10 SLOP</span></div>
+  <div class="row"><span class="name">Centre, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <div class="row"><span class="name">Canal, before</span><span class="track"><span class="bar slop" style="width:90%"></span></span><span class="n">9 SLOP</span></div>
+  <div class="row"><span class="name">Canal, after</span><span class="track"><span class="bar clean" style="width:2px"></span></span><span class="n">0 OK</span></div>
+  <p class="note">Scale 0 to 10. Render weights come from the palette study: 6 or more is SLOP, 3 to 5 is REVIEW, under 3 is OK. Fonts are weight 0 on render; the static scan is what catches Inter. The hero frame and the study chart both scored 0 on both checks.</p>
+</main>
+</body>
+</html>

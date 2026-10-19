@@ -27,6 +27,18 @@ Non-Slop is MIT-licensed (see LICENSE). It stands on the sources below. Unless a
 | [jakubkrehel/make-interfaces-feel-better](https://github.com/jakubkrehel/make-interfaces-feel-better) @ `35545ea`, © 2026 Jakub Krehel | MIT | The idea of a small-interactions checklist a reviewer walks, in `skills/review/`: labels a person can read, optical alignment of an icon with its label, visible focus on the small controls, a loading state, and a second press that must not fire the action again. Paraphrased; no rule text copied. Not taken: concentric corner radii, shadow recipes, image-outline colours, and the fixed press-scale. Those belong to the owner. |
 | Rakesh Mahanti, Instagram carousel ["Anti-AI-Slop Writing"](https://www.instagram.com/p/DeHgoP8kxyV/) | All rights reserved (link only) | The idea that an edit should help a reader do something or understand the subject, and that meaningful choices stay while generic ones are questioned. Link only. No caption or slide text was copied. The sentence in `AGENTS.md` is the wording the owner approved. |
 
+## Type in the examples
+
+The worked examples under `examples/` ship the faces they set, so a screenshot does not depend on a network font. Subsets are woff2 from the `@fontsource` 5.2.8 packs. Each file is SIL Open Font License 1.1; the full text sits beside the files.
+
+| Face | Where | Copyright | Licence |
+|---|---|---|---|
+| Jost | The after pages, the charts and the diagrams | © 2020 The Jost Project Authors | SIL OFL 1.1, `examples/fonts/LICENSE-jost.txt` |
+| Prompt | Thai on the canal board and the type specimen | © 2015 Cadson Demak | SIL OFL 1.1, `examples/fonts/LICENSE-prompt.txt` |
+| Inter | The before pages only, so the scan has a default face to catch | © 2016 The Inter Project Authors | SIL OFL 1.1, `examples/fonts/LICENSE-inter.txt` |
+
+The README charts quote the measured figures in [Nonarkara/palette ANTI-SLOP.md](https://github.com/Nonarkara/palette/blob/main/ANTI-SLOP.md) (18 Oct 2026, 46 apps listed, 37 reachable, 31 labelled). They add no new study numbers. The before/after scores are this repo's scanner on `examples/`, measured 19 Oct 2026.
+
 ## Not used
 
 `LaylaStone180/avoid-ai-design` (@ `78d8727`, 16 Oct 2026) was recommended as a source, but on inspection its README is a copy of funboy322's and its code is a one-line stub padded with filler comments; the scanner it describes isn't there. We credit and link the original (funboy322) instead and took nothing from the copy.

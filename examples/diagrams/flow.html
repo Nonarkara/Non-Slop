@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How Non-Slop runs</title>
+<style>
+@font-face{font-family:"Jost";src:url("../fonts/jost-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Jost";src:url("../fonts/jost-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e7eeea;color:#1a2332}
+body{font-family:"Jost",sans-serif;font-size:18px;line-height:1.4}
+main{padding:32px 28px 40px;max-width:960px}
+h1{margin:0 0 8px;font-size:32px;font-weight:600;letter-spacing:-0.02em;max-width:22ch}
+.face{margin:0 0 28px;max-width:62ch}
+ol{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px}
+li{border-top:2px solid #1a2332;padding-top:12px;max-width:24ch}
+li.other{border-top-color:#9b1c3c}
+b{display:block;font-size:18px;font-weight:600;margin-bottom:6px}
+.other b{color:#9b1c3c}
+span{display:block;font-size:16px}
+</style>
+</head>
+<body>
+<main>
+  <h1>Rules, lint, another agent, then ship</h1>
+  <p class="face">The builder does the first two. The third step is a different agent or a person. The scanner cannot sign that step.</p>
+  <ol>
+    <li><b>1 Rules</b><span>AGENTS.md is the contract. STYLE.md wins when it names a choice.</span></li>
+    <li><b>2 Lint</b><span>Scan the source. Then render the page and look at the silhouette.</span></li>
+    <li class="other"><b>3 A different agent</b><span>Walks the review gate and a real task. Never the builder.</span></li>
+    <li><b>4 Ship</b><span>The page goes out with the scores and what was kept on purpose.</span></li>
+  </ol>
+  <p class="face">The rules live in AGENTS.md, about one page, which is short enough that an agent follows it. STYLE.md names the choices this project means to keep, and the scanner reports those as allowed instead of failing them.</p>
+  <p class="face">Scan reads the source. Render then loads the page and measures the map, the shadows, the line length and the empty regions. A different agent walks the review gate. The builder does not sign their own work.</p>
+</main>
+</body>
+</html>

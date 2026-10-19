@@ -617,3 +617,18 @@ test("install.sh refuses a hostile ref and an old Node, and installs from the ta
   assert.equal(fs.readFileSync(path.join(d, "notes.txt"), "utf8"), "do not lose\n");
   assert.ok(fs.existsSync(path.join(d, ".non-slop/bin/non-slop.mjs")));
 });
+
+test("worked examples: each before page is SLOP, each after page and the charts are OK at 0", async () => {
+  for (const name of ["cards", "command", "type", "centre", "canal"]) {
+    const before = await scanTarget(path.join(ROOT, "examples", name, "before.html"));
+    assert.equal(before.summary.verdict, "SLOP", name + " before");
+    const after = await scanTarget(path.join(ROOT, "examples", name, "after.html"));
+    assert.equal(after.summary.verdict, "OK", name + " after");
+    assert.equal(after.summary.points, 0, name + " after points");
+  }
+  for (const rel of ["examples/hero/frame.html", "examples/charts/study.html", "examples/charts/scores.html", "examples/diagrams/flow.html", "examples/diagrams/plug.html"]) {
+    const res = await scanTarget(path.join(ROOT, rel));
+    assert.equal(res.summary.verdict, "OK", rel);
+    assert.equal(res.summary.points, 0, rel);
+  }
+});
