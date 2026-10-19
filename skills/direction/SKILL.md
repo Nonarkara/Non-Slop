@@ -48,7 +48,7 @@ Presets set defaults for the brief. STYLE.md and the brief override them.
 
 **Executive situational awareness.** A leader has 30 seconds. One sentence of status ("22 gauges over the bank; worst: Satun, Trang"), then 3–5 numbers with trend and comparison, then the map or list to drill into. No vanity metrics, no traffic-light soup, no equal-weight KPI grid: one thing wins. Prints to one A4 page.
 
-**Editorial / essay.** One reading column of 45–75ch with deliberate margins (that space is not void). Type carries the voice; ornament, semicolons and em dashes are the author's. Images are real.
+**Editorial / essay.** One reading column of 45–75ch with deliberate margins (that space is not void). Type carries the voice; ornament, semicolons and em dashes are the author's. Images are real. Copy edits follow `skills/writing/`: help the reader do something or understand the subject, and leave a sentence that is the writer's.
 
 **Tool / app.** The task is the hero: the input or the result is on the first screen. Familiar controls stay familiar. Empty, loading and error states are designed, with a next step.
 

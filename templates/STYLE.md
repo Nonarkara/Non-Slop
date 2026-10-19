@@ -24,6 +24,15 @@ Everything here was chosen on purpose. Agents and reviewers read this before any
 ## Voice
 - EN: <register>. TH: <register>. ZH: <register, Simplified>.
 
+## Protected voice
+<!-- Machine-readable: the scanner does not flag these. Historical lines, quotations,
+     unusual metaphors, and the story of this project. One per line.
+     A phrase under ## Allow is protected the same way.
+     - phrase "exact sentence or fragment": why it stays
+     - marker "distinctive fragment": why it marks this voice -->
+<!-- - phrase "the water came up the soi at four": opening of the field note -->
+<!-- - marker "Sanzo Wada": this page is about his colour book -->
+
 ## Allow
 <!-- Machine-readable: the scanner reports these as ALLOWED. One per line: kind, target, reason.
      Rule ids: `node .non-slop/bin/non-slop.mjs rules`. Access rules can't be allowed away.
@@ -34,3 +43,4 @@ Everything here was chosen on purpose. Agents and reviewers read this before any
 <!-- - rule emoji-icons in src/kids/**: playful register for children -->
 <!-- - font "Source Serif 4": display face, chosen -->
 <!-- - colour #fbf7ef: warm paper ground -->
+<!-- - phrase "unlock a vibrant world of colour": the poster line, kept on purpose -->

@@ -360,6 +360,120 @@ test("a symlink used as the scan root into /proc, /sys, /dev, /run, or / is name
   assert.equal(scanned.filesScanned, 1);
 });
 
+const promisePage = () => `<html lang="en">
+<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+<h1>Unlock a vibrant world of colour</h1>
+<p>Step into a world of possibilities.</p>
+<p>Explore 348 colour combinations by Sanzo Wada.</p>
+<p>Please unlock this file.</p>
+<blockquote><p>Seamlessly unlock your true potential.</p></blockquote>
+</body></html>`;
+
+test("generic-promise is REVIEW: the sentence is quoted, nothing is scored or rewritten", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.html"), promisePage());
+  const res = await scanTarget(d);
+  const hits = res.findings.filter((f) => f.id === "generic-promise");
+  assert.equal(hits.length, 2);
+  assert.ok(hits.every((f) => f.status === "REVIEW"));
+  assert.ok(hits.some((f) => f.detail === "Unlock a vibrant world of colour"));
+  assert.ok(hits.some((f) => /Step into a world of possibilities/.test(f.detail)));
+  assert.ok(hits.every((f) => /world of something|promises a journey|announces a future|promises a height|invites the reader/.test(f.why)));
+  assert.ok(!hits.some((f) => /348 colour combinations|unlock this file/i.test(f.detail)));
+  assert.equal(res.summary.points, 0);
+  assert.equal(res.summary.review, 2);
+  assert.equal(res.summary.verdict, "OK");
+  assert.ok(!res.findings.some((f) => f.id === "hype-copy"), "a quotation is not a hype-copy hit");
+  const cli = spawnSync(process.execPath, [CLI, "scan", d], { encoding: "utf8" });
+  assert.equal(cli.status, 0);
+  assert.match(cli.stdout, /REVIEW\s+generic-promise/);
+  assert.match(cli.stdout, /Unlock a vibrant world of colour/);
+  assert.match(cli.stdout, /do not rewrite/i);
+  assert.match(cli.stdout, /Verdict: OK/);
+  const hook = spawnSync(process.execPath, [CLI, "scan", "--hook"], { encoding: "utf8", input: JSON.stringify({ tool_input: { file_path: path.join(d, "a.html") } }) });
+  assert.equal(hook.status, 0, hook.stderr);
+});
+
+test("allowlisted phrases and Protected voice are not flagged; a rule allow is ALLOWED", async () => {
+  const listed = tmp();
+  fs.writeFileSync(path.join(listed, "a.html"), promisePage());
+  fs.writeFileSync(path.join(listed, "STYLE.md"), "## Allow\n- phrase \"Unlock a vibrant world of colour\": the 1932 poster line\n");
+  let res = await scanTarget(listed);
+  let hits = res.findings.filter((f) => f.id === "generic-promise");
+  assert.equal(hits.length, 1);
+  assert.match(hits[0].detail, /world of possibilities/);
+  assert.ok(!res.findings.some((f) => /Unlock a vibrant world of colour/.test(f.detail || "")));
+
+  const voice = tmp();
+  fs.writeFileSync(path.join(voice, "a.html"), promisePage());
+  fs.writeFileSync(path.join(voice, "STYLE.md"), "## Protected voice\n- phrase \"Unlock a vibrant world of colour\": poster kept in the story\n- phrase \"Step into a world of possibilities\": the catalogue story\n");
+  res = await scanTarget(voice);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise").length, 0);
+  assert.equal(res.summary.points, 0);
+  assert.equal(res.style.phrases, 2);
+
+  const marked = tmp();
+  fs.writeFileSync(path.join(marked, "a.html"), `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><h1>Unlock a vibrant world of colour, the line Sanzo Wada kept</h1></body></html>`);
+  let bare = await scanTarget(marked);
+  assert.equal(bare.findings.filter((f) => f.id === "generic-promise" && f.status === "REVIEW").length, 1);
+  fs.writeFileSync(path.join(marked, "STYLE.md"), "## Protected voice\n- marker \"Sanzo Wada\": this page is about his colour book\n");
+  res = await scanTarget(marked);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise").length, 0);
+
+  const quoted = tmp();
+  fs.writeFileSync(path.join(quoted, "a.html"), `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body><blockquote><p>Unlock a vibrant world of colour. Seamlessly unlock your true potential.</p></blockquote></body></html>`);
+  res = await scanTarget(quoted);
+  assert.ok(!res.findings.some((f) => f.id === "generic-promise" || f.id === "hype-copy"));
+
+  const allowed = tmp();
+  fs.writeFileSync(path.join(allowed, "a.html"), promisePage());
+  fs.writeFileSync(path.join(allowed, "STYLE.md"), "## Allow\n- rule generic-promise: the poster line is the voice\n");
+  res = await scanTarget(allowed);
+  hits = res.findings.filter((f) => f.id === "generic-promise");
+  assert.ok(hits.length >= 1);
+  assert.ok(hits.every((f) => f.status === "ALLOWED"));
+  assert.equal(res.summary.review, 0);
+  assert.equal(res.summary.points, 0);
+
+  const tree = tmp();
+  fs.mkdirSync(path.join(tree, "apps/web"), { recursive: true });
+  fs.mkdirSync(path.join(tree, "apps/other"), { recursive: true });
+  fs.writeFileSync(path.join(tree, "apps/web/a.html"), promisePage());
+  fs.writeFileSync(path.join(tree, "apps/other/a.html"), promisePage());
+  fs.writeFileSync(path.join(tree, "apps/web/STYLE.md"), "## Protected voice\n- phrase \"Unlock a vibrant world of colour\": kept here\n- phrase \"Step into a world of possibilities\": kept here\n");
+  res = await scanTarget(tree);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise" && f.rel.startsWith("apps/web/")).length, 0);
+  const other = res.findings.filter((f) => f.id === "generic-promise" && f.rel.startsWith("apps/other/"));
+  assert.equal(other.length, 2);
+  assert.ok(other.every((f) => f.status === "REVIEW"));
+});
+
+test("Protected voice and allowlisted phrases parse; a prose Voice section does not", () => {
+  const s = parseStyle("# S\n## Voice\n- phrase \"not this one\": prose register\n## Protected voice\n- phrase \"the water came up the soi\": field note\n- marker \"Sanzo Wada\": the colour book\n- phrase ab\n## Allow\n- phrase \"unlock a vibrant world of colour\": poster line\n- rule glass: kept\n");
+  assert.deepEqual(s.phrases.map((p) => p.text), ["the water came up the soi", "unlock a vibrant world of colour"]);
+  assert.deepEqual(s.markers.map((m) => m.text), ["Sanzo Wada"]);
+  assert.deepEqual(s.rules.map((r) => r.id), ["glass"]);
+  assert.ok(s.warnings.some((w) => /too short/i.test(w)));
+});
+
+test("the writing docs keep the principle, the refusal, and the trial the scanner cannot judge", () => {
+  const writing = fs.readFileSync(path.join(ROOT, "skills/writing/SKILL.md"), "utf8");
+  const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");
+  const agents = fs.readFileSync(path.join(ROOT, "AGENTS.md"), "utf8");
+  assert.match(agents, /Every edit should help a reader do something or understand the subject better\. Preserve meaningful choices; question generic ones\./);
+  assert.match(writing, /Every edit should help a reader do something or understand the subject better/);
+  assert.match(writing, /AI-likeness/);
+  assert.match(writing, /Mistakes added so the text looks human/);
+  assert.match(writing, /banned-word list/);
+  assert.match(review, /The scanner cannot judge this/);
+  assert.match(review, /double-submit/);
+  assert.match(review, /find X, download Y/);
+  assert.match(review, /Readable labels/);
+  assert.match(review, /Icon alignment/);
+  assert.doesNotMatch(review, /concentric|border radius must|scale\(0\.96\)/i);
+});
+
 test("install.sh refuses a hostile ref and an old Node, and installs from the tarball curl saved", () => {
   const bad = spawnSync("sh", [path.join(ROOT, "install.sh")], { encoding: "utf8", env: { ...process.env, NON_SLOP_REF: "../evil" } });
   assert.notEqual(bad.status, 0);
