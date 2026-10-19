@@ -133,5 +133,11 @@ Points: ≥6 SLOP, 3–5 REVIEW. Weights and thresholds come from the Oct 2026 m
 | `low-contrast` | 2 (access) | ≥3 text elements below WCAG AA contrast |
 | `small-targets` | 1 (access) | ≥3 phone controls smaller than 44×44px |
 | `focus-invisible` | 2 (access) | ≥2 controls show no visible change when reached with Tab |
+| `unlabelled-fields` | 1 (access) | Rendered form fields with no label (a placeholder is not a label) |
+| `unnamed-controls` | 1 (access) | Rendered buttons or links with no accessible name |
+| `slow-lcp` | 1 | Largest paint later than 4s on both the desktop and phone loads (lab) |
+| `layout-shift` | 1 | Layout shift over 0.25 while loading |
+| `heavy-images` | 0 | Images over 300 KB, over 2 MB in total, or served over 2.5× their shown width (reported only) |
+| `no-home-link` | 0 | No link home (name or logo) in the top 200px (reported only) |
 | `boxed-everything` | 0 | ≥70% of first-screen text inside boxes (reported only) |
 | `default-font` | 0 | Primary face is a stock default (reported only; the static scan judges fonts) |
