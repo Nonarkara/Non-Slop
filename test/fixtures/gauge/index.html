@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ระดับน้ำ คลองบางมด</title>
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root { --ground: #f4f1ea; --ink: #1c1915; --water: #1d4e89; --bank: #9a3412; }
+  body { margin: 0; background: var(--ground); color: var(--ink); font-family: Prompt, sans-serif; font-size: 18px; }
+  header { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 20px; border-bottom: 1px solid #d6d0c4; }
+  h1 { font-size: 1.6rem; margin: 0; }
+  main { display: grid; grid-template-columns: 1.4fr 0.8fr; min-height: calc(100vh - 52px); }
+  .gauge { background: var(--water); color: white; padding: 28px; }
+  .gauge strong { font-size: 4rem; font-weight: 600; letter-spacing: -0.03em; }
+  table { width: 100%; border-collapse: collapse; }
+  td, th { text-align: left; padding: 8px 0; border-bottom: 1px solid #e4dfd4; font-weight: 400; }
+  a:focus-visible { outline: 2px solid var(--bank); outline-offset: 2px; }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>ระดับน้ำ คลองบางมด</h1>
+  <p>อัปเดต 19 ต.ค. 2569 07:10</p>
+</header>
+<main>
+  <section class="gauge" aria-label="staff gauge">
+    <p>เหนือตลิ่ง</p>
+    <strong>+42</strong>
+    <p>ซม. · สถานี BM-04 · กรมชลประทาน</p>
+    <p><a href="/csv" style="color:white">ดาวน์โหลด CSV</a></p>
+  </section>
+  <section>
+    <table>
+      <caption>สถานีใกล้เคียง</caption>
+      <thead><tr><th>สถานี</th><th>ซม.</th><th>เวลา</th></tr></thead>
+      <tbody>
+        <tr><td>สะพานบางมด</td><td>+18</td><td>07:08</td></tr>
+        <tr><td>ปากคลอง</td><td>-6</td><td>07:05</td></tr>
+        <tr><td>วัดใหม่</td><td>+3</td><td>06:55</td></tr>
+      </tbody>
+    </table>
+    <p>ฟังประกาศ ปภ. ก่อนย้ายของ</p>
+  </section>
+</main>
+</body>
+</html>

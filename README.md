@@ -23,7 +23,7 @@ npx -y github:Nonarkara/Non-Slop init
 That adds:
 
 - `.non-slop/`: the rules, skills and scanner (a copy, so it works offline and pins a version).
-- Pointers for each agent: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/non-slop.mdc`, `.windsurf/rules/non-slop.md`, `.github/copilot-instructions.md`. Missing files are created. If you already have one, a short marked block is appended once; your text is never changed. Run with `--no-append` to skip that.
+- Pointers for each agent: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/non-slop.mdc`, `.windsurf/rules/non-slop.md`, `.github/copilot-instructions.md`. Missing files are created. If you already have `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` or `copilot-instructions.md`, a short marked block is appended once; your text is never changed. An existing `.cursor/rules/non-slop.mdc` or `.windsurf/rules/non-slop.md` is left as you wrote it. Run with `--no-append` to skip appending. Symlinks are not followed.
 - `STYLE.md`, from a template, only if you don't have one.
 - A local `pre-commit` hook, only if you don't have one. It blocks a commit when the staged files score SLOP. No CI minutes. Skip once with `git commit --no-verify`.
 
@@ -61,7 +61,7 @@ node .non-slop/bin/non-slop.mjs rules                        # every rule
 
 - **scan** finds what's certain from source: 44 rules for fonts, colour, depth, layout, motion, icons, copy, imagery, accessibility and languages (EN/TH/ZH). Each hit has a severity (P0 anyone notices, P1 a designer notices, P2 polish), a fix, and when it's fine to keep. It judges the stack, not the item: one hit is a question; a stack is SLOP.
 - **render** loads the page at 1440, 1024 and 390 (plus a 320px reflow check), saves screenshots and a black-and-white **silhouette**, and measures stretch-to-fill, void, map share, bars, shadows, radii, pills, contrast, tap targets and keyboard focus. Install Playwright once with `npm i -D playwright && npx playwright install chromium`.
-- `--json` for tools, `--fail-on=P0|P1|slop|never` for gates, `--staged` for hooks.
+- `--json` for tools, `--fail-on=P0|P1|slop|never` for gates, `--staged` for hooks. Files bigger than 8 MB, and binary files, are listed and not scored. Symlinks are followed; a link that resolves to the filesystem root is not.
 
 It is a screen, not a judge. Render it, look at it, and get a second reviewer.
 
@@ -88,7 +88,7 @@ Fill in `STYLE.md`. The prose sections tell agents what's deliberate (type, colo
 
 Or inline, in code: `/* non-slop-allow: glass -- legibility over live video */`.
 
-Allowed hits show as **ALLOWED** and cost nothing. Accessibility rules (contrast, focus, alt text, lang, reduced motion) can't be allowed away: they show as **ASK-OWNER**, so the agent raises them with you instead of quietly changing your design. Before removing anything, the agent asks: *would removing this make the page more generic? Then keep it.*
+Allowed hits show as **ALLOWED** and cost nothing. A `## Signature` section in `AGENTS.md` is read the same way, including when `STYLE.md` exists but its Allow section is still empty. A `STYLE.md` in a subfolder covers the files under it, and allows from parent folders still apply. `Style.md` and `STYLE.md` are the same file. Accessibility rules (contrast, focus, alt text, unnamed controls, lang, zoom, reduced motion) can't be allowed away: they show as **ASK-OWNER**, so the agent raises them with you instead of quietly changing your design. Before removing anything, the agent asks: *would removing this make the page more generic? Then keep it.*
 
 ## Credits
 

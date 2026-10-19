@@ -26,7 +26,9 @@ Everything here was chosen on purpose. Agents and reviewers read this before any
 
 ## Allow
 <!-- Machine-readable: the scanner reports these as ALLOWED. One per line: kind, target, reason.
-     Rule ids: `node .non-slop/bin/non-slop.mjs rules`. Access rules can't be allowed away. -->
+     Rule ids: `node .non-slop/bin/non-slop.mjs rules`. Access rules can't be allowed away.
+     A ## Signature section in AGENTS.md is read too, even while these lines stay commented out.
+     Style.md in any case, and a STYLE.md in a subfolder, count. -->
 <!-- - rule void: essay pages are a reading column with deliberate margins -->
 <!-- - rule cream-terracotta: warm paper and brick red are the house colours -->
 <!-- - rule emoji-icons in src/kids/**: playful register for children -->

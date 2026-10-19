@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // non-slop-skip-file: scanner code, not UI
 // non-slop: one CLI for the anti-slop stack. Zero dependencies; `render` optionally uses Playwright.
+const nodeMajor = Number(process.versions.node.split(".")[0]);
+if (!(nodeMajor >= 18)) { console.error(`non-slop needs Node 18+ (this is ${process.version}). https://nodejs.org`); process.exit(1); }
 import fs from "node:fs";
 import path from "node:path";
 import { scanTarget, formatText, verdict } from "../lib/scan.mjs";
@@ -14,7 +16,7 @@ const HELP = `non-slop — remove the defaults nobody chose; keep the choices so
       --min=P0|P1|P2                   lowest severity to report (default P2)
       --fail-on=slop|P0|P1|P2|never    exit 2 when the verdict is SLOP (default) or any counted hit at that level
       --staged                         only files staged in git (pre-commit)
-      --style=path/STYLE.md            allowlist to apply (default: nearest STYLE.md)
+      --style=path/STYLE.md            allowlist to apply (default: STYLE.md and ## Signature, from the file up to the git root)
       --include-examples               also scan examples/, fixtures/, test/
       --hook                           Claude Code PostToolUse mode (reads hook JSON on stdin)
   non-slop render <url|file.html>     rendered check (needs Playwright): screenshots 1440/1024/390,
