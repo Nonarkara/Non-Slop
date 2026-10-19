@@ -127,7 +127,7 @@ Points: ≥6 SLOP, 3–5 REVIEW. Weights and thresholds come from the Oct 2026 m
 | `gradients` | 1 | ≥3 decorative gradient fills, or gradient text |
 | `glass` | 1 | ≥2 backdrop-blur layers |
 | `big-number-tiles` | 1 | ≥2 big bare numbers in tiles |
-| `long-lines` | 1 | Prose lines wider than ~40em (≈80+ Latin characters) |
+| `long-lines` | 1 | Prose lines wider than ~32em (≈65+ Latin characters — A4 line length) |
 | `type-chaos` | 1 | ≥9 distinct font sizes |
 | `mobile-overflow` | 1 | Phone (390) or 320px layout scrolls sideways |
 | `broken-placeholder` | 1 | Visible undefined/NaN, lorem ipsum or mock/sample data |
