@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ruled strip</title>
+<style>
+@font-face{font-family:"Jost";src:url("../fonts/jost-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Jost";src:url("../fonts/jost-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Prompt";src:url("../fonts/prompt-latin-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e7eeea;color:#1a2332}
+body{font-family:"Jost","Prompt",sans-serif;font-size:18px;line-height:1.45}
+header{height:48px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid #1a2332}
+header p{margin:0;font-size:15px}
+main{padding:24px 20px 48px}
+.strip{display:flex;flex-wrap:wrap;width:max-content;max-width:100%;border-top:1px solid #1a2332;border-bottom:1px solid #1a2332}
+.strip div{padding:10px 22px 12px 0;margin-right:22px;border-right:1px solid #b7c4bc}
+.strip div:last-child{border-right:0;margin-right:0}
+dt{font-size:14px}
+dd{margin:2px 0 0;font-size:22px;font-weight:600}
+dd.lead{font-size:48px;line-height:1;color:#9b1c3c}
+.note{max-width:62ch}
+.action{display:inline-flex;align-items:center;min-height:44px;padding:0 14px;border:1px solid #1a2332;color:#1a2332;text-decoration:none;font-weight:600}
+.action:hover{background:#1a2332;color:#e7eeea}
+a:focus-visible{outline:2px solid #9b1c3c;outline-offset:3px}
+</style>
+</head>
+<body>
+<header><p>FloodDash press brief · 19 Oct 2026, 07:06 ICT</p></header>
+<main>
+  <dl class="strip">
+    <div><dt>Over bank</dt><dd class="lead">22</dd></div>
+    <div><dt>High water</dt><dd>53 gauges</dd></div>
+    <div><dt>Satun rain, 24 h</dt><dd>134 mm</dd></div>
+  </dl>
+  <p class="note">These three figures come from the FloodDash press brief at 07:06 ICT on 19 October 2026. The strip is only as wide as the words. Highest watches that morning were Satun, Trang and Kanchanaburi.</p>
+  <p class="note">Forty-six citizen flood apps were listed on FloodDash. Thirty-seven could be opened, and thirty-one were labelled on 18 October 2026. The clean ones had a median of nine boxes on a screen. The slop ones had forty-five.</p>
+  <p><a class="action" href="https://flood.nonarkara.org/press">Read the press brief</a></p>
+</main>
+</body>
+</html>

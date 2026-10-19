@@ -2,36 +2,69 @@
 
 **Remove the defaults nobody chose. Keep the choices somebody made.**
 
-Non-Slop is a set of rules, four skills and a small scanner that you point your AI coding agent at, so the pages it builds stop looking like every other AI-built page: the purple gradient, Inter everywhere, the centred hero with two buttons, three identical rounded cards, a shadow on every box, "seamlessly unlock". It works with Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini and anything else that reads an `AGENTS.md`.
+Non-Slop is Non Arkaraprasertkul's rules against AI design slop, a zero-dependency linter, and four skills. It gives an agent a contract, a scanner, and a review that a different agent has to do. One install covers Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini, and anything else that reads an `AGENTS.md`.
+
+![A dark command centre beside a light canal board. The left page glows. The right page is the map.](docs/img/hero.png)
+
+*Left: a dark command centre for the FloodDash press brief of 19 Oct 2026. Right: the Bang Mot canal board, where the map is the page. These are two HTML files in `examples/`, not one screen retouched. Playwright took the picture.*
 
 It also protects your style. A generic "anti-AI" pass will happily delete your serif, your warm paper, your em dashes and your jokes, because AI uses them too. Here, your `STYLE.md` wins over every rule, and the scanner reports your choices as **ALLOWED** instead of failing them.
 
-## 30-second setup
+On 18 Oct 2026, 46 citizen flood apps were listed on FloodDash. 37 could be opened. 31 were labelled. A clean app had a median of **9 boxes** on a screen. A slop app had **45**. **68%** of the slop apps had 8 or more shadows. No clean app did. The linter caught 91% of that slop with 95% precision at the REVIEW line. Those two rates are in-sample and optimistic.
 
-In the root of any repo:
+## Quick start
+
+From the repo you want to protect:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Nonarkara/Non-Slop/main/install.sh | sh
 ```
 
-or, if you prefer npx:
+Same result, if you prefer npx:
 
 ```bash
 npx -y github:Nonarkara/Non-Slop init
 ```
 
-That adds:
+Or a submodule:
 
-- `.non-slop/`: the rules, skills and scanner (a copy, so it works offline and pins a version).
-- Pointers for each agent: `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.cursor/rules/non-slop.mdc`, `.windsurf/rules/non-slop.md`, `.github/copilot-instructions.md`. Missing files are created. If you already have `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` or `copilot-instructions.md`, a short marked block is appended once; your text is never changed. An existing `.cursor/rules/non-slop.mdc` or `.windsurf/rules/non-slop.md` is left as you wrote it. Run with `--no-append` to skip appending. Symlinks are not followed.
-- `STYLE.md`, from a template, only if you don't have one.
-- A local `pre-commit` hook, only if you don't have one. It blocks a commit when the staged files score SLOP. No CI minutes. Skip once with `git commit --no-verify`.
+```bash
+git submodule add https://github.com/Nonarkara/Non-Slop .non-slop && node .non-slop/bin/non-slop.mjs init
+```
 
-Prefer a submodule? `git submodule add https://github.com/Nonarkara/Non-Slop .non-slop && node .non-slop/bin/non-slop.mjs init`. Update later with `init --update` (it only rewrites `.non-slop/`).
+That writes `.non-slop/` (the rules, the skills, the scanner) and one pointer per tool. Missing files are created. If you already have `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` or `copilot-instructions.md`, a short marked block is appended once. Your text is not changed. An existing `.cursor/rules/non-slop.mdc` or `.windsurf/rules/non-slop.md` is left as you wrote it. `init --update` only rewrites `.non-slop/`. Needs Node 18 or newer. The scanner has no dependencies.
 
-Needs Node 18 or newer. The scanner has no dependencies.
+| Tool | What it reads |
+|---|---|
+| Claude Code | `CLAUDE.md`. Optional PostToolUse hook, under The scanner. |
+| Codex | `AGENTS.md`. No separate file. |
+| Cursor | `.cursor/rules/non-slop.mdc` |
+| Copilot | `.github/copilot-instructions.md` |
+| Windsurf | `.windsurf/rules/non-slop.md` |
+| Gemini | `GEMINI.md` |
+| Any agent | `AGENTS.md` |
 
-## Point your agent at it
+Check the source, from this repo or from `.non-slop` after install:
+
+```bash
+node bin/non-slop.mjs scan .
+node .non-slop/bin/non-slop.mjs scan .
+```
+
+Check a rendered page. This needs Playwright (`npm i -D playwright && npx playwright install chromium`):
+
+```bash
+node bin/non-slop.mjs render http://localhost:3000
+```
+
+`slop-lint` is not in this repo. It lives in [Nonarkara/palette](https://github.com/Nonarkara/palette) (and in dr-non-vibecoding-skills). Same rendered thresholds: **6 or more is SLOP, 3 to 5 is REVIEW, under 3 is OK.**
+
+```bash
+npm i -D playwright pngjs && npx playwright install chromium
+node tools/slop-lint.mjs http://localhost:3000
+```
+
+This repo's **scan** uses a different scale: SLOP at 8 or more points, REVIEW at 3 to 7. Do not mix the two numbers. Scan judges the source, including fonts. Render judges the pixels.
 
 Paste this to any agent, once per repo:
 
@@ -39,7 +72,67 @@ Paste this to any agent, once per repo:
 
 No install allowed? This works too: *"Before any UI work, read and follow https://github.com/Nonarkara/Non-Slop/blob/main/AGENTS.md."*
 
-## What the agent does
+## Five patterns
+
+Each pair is one tell and the fix. The HTML is in `examples/`. Static points are this repo's scan (SLOP at 8 or more). Render points use the palette weights (SLOP at 6 or more). Measured 19 Oct 2026.
+
+### Padded cards, then a ruled strip
+
+| Before | After |
+|---|---|
+| ![Three equal cards, each a number in a padded box.](docs/img/cards-before.png) | ![22, 53 and 134 mm in a strip as wide as the words.](docs/img/cards-after.png) |
+
+Static: before **SLOP 9**, after **OK 0**. Render: before **REVIEW 5**, after **OK 0**. The three big numbers are the pattern, so render still marks them.
+
+### A dark command centre, then one sentence
+
+| Before | After |
+|---|---|
+| ![A navy page, a purple gradient headline, and glowing cards.](docs/img/command-before.png) | ![22 in crimson, then a short table on a light ground.](docs/img/command-after.png) |
+
+Static: before **SLOP 27**, after **OK 0**. Render: before **SLOP 10**, after **OK 0**.
+
+### Inter, then Jost and Prompt
+
+| Before | After |
+|---|---|
+| ![The word Supercharge, centred, set in Inter.](docs/img/type-before.png) | ![22 gauges over the bank, set in Jost, with a Thai line in Prompt.](docs/img/type-after.png) |
+
+Static: before **SLOP 8**, after **OK 0**. Render: before **REVIEW 5**, after **OK 0**. Render gives the font a weight of 0. The static scan is what catches Inter.
+
+### Everything centred, then the count on the left
+
+| Before | After |
+|---|---|
+| ![A centred headline, two buttons, and three equal cards.](docs/img/centre-before.png) | ![A large 22 on the left and a short list of watches.](docs/img/centre-after.png) |
+
+Static: before **SLOP 12**, after **OK 0**. Render: before **SLOP 10**, after **OK 0**.
+
+### A pinhole map, then the surgical table
+
+| Before | After |
+|---|---|
+| ![A small map inside a card, under a centred headline.](docs/img/canal-before.png) | ![The canal fills the page. Stations sit on the map and in a rail.](docs/img/canal-after.png) |
+
+Static: before **SLOP 14**, after **OK 0**. Render: before **SLOP 9** (the map was 18% of the first screen), after **OK 0** (the map was 78%).
+
+The hero frame and the study chart both scored **OK 0** on scan and on render.
+
+![Static points and render points for each before and after page.](docs/img/scores.png)
+
+## How it runs
+
+![Four steps on a rule: Rules, Lint, A different agent, Ship. The third step is crimson.](docs/img/flow.png)
+
+The same sequence, as mermaid:
+
+```mermaid
+%%{init: {'theme':'neutral'}}%%
+flowchart LR
+  A[1 Rules] --> B[2 Lint]
+  B --> C[3 A different agent]
+  C --> D[4 Ship]
+```
 
 1. **Before coding:** a five-line brief (who, one job, what wins first, constraints, a direction taken from the subject's own world). Presets for civic dashboards, with the operational, map-first one as the default. → `skills/direction/`
 2. **While coding:** tokens first, then subtract. Empty space is a decision; small things don't grow to fill it. On the words: quote a weak sentence and propose the smallest change that helps the reader; keep the voice. → `skills/writing/`
@@ -47,6 +140,34 @@ No install allowed? This works too: *"Before any UI work, read and follow https:
 4. **Before merge:** a different agent or person runs the review gate (task, access, states, languages, map rule, small interactions) and a real-task trial the scanner cannot judge, and lists what was kept on purpose. → `skills/review/`
 
 The whole contract is [AGENTS.md](AGENTS.md), about one page, short enough that agents actually follow it. The long catalog lives in the skills.
+
+## Where it plugs in
+
+![A table of tools and the file each one reads.](docs/img/plug.png)
+
+## What the study measured
+
+![Bars for boxes, shadows, map share, and lint precision and recall.](docs/img/study.png)
+
+Figures from [palette ANTI-SLOP.md](https://github.com/Nonarkara/palette/blob/main/ANTI-SLOP.md), measured 18 Oct 2026. "Clean" is the median clean app. "Slop" is the median slop or mixed app. This table adds nothing that file does not already say.
+
+| Measure | Clean | Slop |
+|---|---|---|
+| Median boxes on one screen | 9 | 45 |
+| Apps with 8 or more shadows | 0% | 68% (median shadows 1 vs 14, up to 176) |
+| Median line length | 26em | 61em (64% of slop over 40em) |
+| Corner radii, and share of boxes rounded | 1 radius, 33% | 5 radii, 93% |
+| Apps with 9 or more type sizes | not given | 55% (one had 22) |
+| Emoji used as icons | 0% | 50% (up to 52) |
+| Apps with 10 or more pills | not given | 45% (one had 53) |
+| Dark command centre | 0% | 36%. Every clean app was light. |
+| Stretch-to-fill | not given | 36% |
+| Modal on first load | not given | 27% |
+| Gradients or glass | not given | 27% |
+| Mean map share of the first screen | 89% | 41% |
+| Lint at the REVIEW line | precision 0.95, recall 0.91, in-sample | |
+
+The same check sent 2 of 5 professional map apps to REVIEW. It misses a centred phone column that has a full-width header. After the linter, still look at the page.
 
 ## The scanner
 

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FloodDash study, 18 Oct 2026</title>
+<style>
+@font-face{font-family:"Jost";src:url("../fonts/jost-400.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Jost";src:url("../fonts/jost-600.woff2") format("woff2");font-weight:600;font-style:normal;font-display:swap}
+*{box-sizing:border-box}
+html,body{margin:0;background:#e7eeea;color:#1a2332}
+body{font-family:"Jost",sans-serif;font-size:18px;line-height:1.45}
+main{padding:28px 28px 40px;max-width:920px}
+h1{margin:0 0 4px;font-size:32px;font-weight:600;letter-spacing:-0.02em;max-width:22ch}
+.face,.note{margin:0 0 16px;font-size:18px;max-width:62ch}
+svg{width:100%;height:auto;display:block}
+.note{max-width:62ch}
+</style>
+</head>
+<body>
+<main>
+  <h1>31 flood apps, labelled by eye</h1>
+  <p class="face">18 Oct 2026. Crimson is the slop group. Ink is the clean group. A longer bar is not always the worse one: the clean map is the long bar.</p>
+  <svg viewBox="0 0 860 520" role="img" aria-labelledby="charttitle">
+    <title id="charttitle">Bars for boxes, shadows, map share, and lint precision and recall</title>
+    <g font-family="Jost, sans-serif" fill="#1a2332" font-size="15">
+      <text x="0" y="22" font-size="18" font-weight="600">Median boxes on one screen</text>
+      <text x="200" y="58">Clean 9</text>
+      <rect x="300" y="44" width="112" height="18" fill="#1a2332"/>
+      <text x="200" y="92">Slop 45</text>
+      <rect x="300" y="78" width="560" height="18" fill="#9b1c3c"/>
+
+      <text x="0" y="142" font-size="18" font-weight="600">Apps with 8 or more shadows</text>
+      <text x="200" y="178">Clean 0%</text>
+      <rect x="300" y="166" width="2" height="18" fill="#1a2332"/>
+      <text x="200" y="212">Slop 68%</text>
+      <rect x="300" y="198" width="381" height="18" fill="#9b1c3c"/>
+
+      <text x="0" y="262" font-size="18" font-weight="600">Mean map share of the first screen</text>
+      <text x="200" y="298">Clean 89%</text>
+      <rect x="300" y="284" width="498" height="18" fill="#1a2332"/>
+      <text x="200" y="332">Slop 41%</text>
+      <rect x="300" y="318" width="230" height="18" fill="#9b1c3c"/>
+
+      <text x="0" y="382" font-size="18" font-weight="600">Lint at the REVIEW line, in-sample</text>
+      <text x="200" y="418">Precision 0.95</text>
+      <rect x="340" y="404" width="494" height="18" fill="#1a2332"/>
+      <text x="200" y="452">Recall 0.91</text>
+      <rect x="340" y="438" width="473" height="18" fill="#1a2332"/>
+      <text x="0" y="500" font-size="14">Scale for the last pair is 0 to 1. The other scales are 0 to 45, 0 to 100, and 0 to 100.</text>
+    </g>
+  </svg>
+  <p class="note">Forty-six citizen flood apps were listed on FloodDash. Thirty-seven responded, and thirty-one were labelled. Median shadows were 1 on the clean apps and 14 on the slop apps. Median line length was 26em against 61em. Precision 0.95 and recall 0.91 are in-sample and optimistic. The same check sent 2 of 5 professional map apps to REVIEW.</p>
+</main>
+</body>
+</html>
