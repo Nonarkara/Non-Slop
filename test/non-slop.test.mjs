@@ -303,6 +303,63 @@ test("init appends to an existing GEMINI.md once, and does not follow symlinks",
   assert.equal(fs.readFileSync(outside, "utf8"), "# outside\n");
 });
 
+test("init does not write through a directory symlink or a broken hook symlink", () => {
+  const d = tmp();
+  execFileSync("git", ["init", "-q"], { cwd: d });
+  const outside = tmp();
+  const gh = path.join(outside, "gh");
+  const cursor = path.join(outside, "cursor");
+  fs.mkdirSync(gh);
+  fs.mkdirSync(cursor);
+  fs.symlinkSync(gh, path.join(d, ".github"));
+  fs.symlinkSync(cursor, path.join(d, ".cursor"));
+  fs.symlinkSync(path.join(outside, "missing-hook"), path.join(d, ".git/hooks/pre-commit"));
+  const log = init(d);
+  assert.deepEqual(fs.readdirSync(gh), []);
+  assert.deepEqual(fs.readdirSync(cursor), []);
+  assert.equal(fs.existsSync(path.join(outside, "missing-hook")), false);
+  assert.equal(fs.lstatSync(path.join(d, ".git/hooks/pre-commit")).isSymbolicLink(), true);
+  const text = log.join("\n");
+  assert.match(text, /\.github\/copilot-instructions\.md: skipped \(symlink \.github -> /);
+  assert.match(text, /\.cursor\/rules\/non-slop\.mdc: skipped \(symlink \.cursor -> /);
+  assert.match(text, /hook: skipped \(symlink \.git\/hooks\/pre-commit -> /);
+  assert.ok(fs.readFileSync(path.join(d, "AGENTS.md"), "utf8").includes("non-slop"));
+});
+
+test("init does not install a hook whose path resolves outside the project", () => {
+  const d = tmp();
+  const gitdir = path.join(tmp(), "gitdir");
+  execFileSync("git", ["init", "-q", `--separate-git-dir=${gitdir}`], { cwd: d });
+  const hook = path.join(gitdir, "hooks", "pre-commit");
+  assert.equal(fs.existsSync(hook), false);
+  const log = init(d);
+  assert.equal(fs.existsSync(hook), false);
+  assert.equal(fs.existsSync(path.join(d, "tmp")), false);
+  assert.ok(log.some((l) => l.startsWith("hook: skipped (outside the project")));
+  assert.ok(fs.readFileSync(path.join(d, "AGENTS.md"), "utf8").includes("non-slop"));
+});
+
+test("a symlink used as the scan root into /proc, /sys, /dev, /run, or / is named and not walked", { timeout: 8000 }, async () => {
+  const d = tmp();
+  const targets = ["/proc", "/sys", "/dev", "/run", "/"].filter((p) => fs.existsSync(p));
+  assert.ok(targets.includes("/proc") && targets.includes("/"));
+  for (const t of targets) {
+    const link = path.join(d, "link-" + (t === "/" ? "root" : t.slice(1)));
+    fs.symlinkSync(t, link);
+    const res = await scanTarget(link);
+    assert.equal(res.filesScanned, 0, t);
+    assert.match(res.note.join("\n"), new RegExp(`skipped symlink .*\\(resolves to ${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)`));
+  }
+  const real = path.join(d, "real");
+  fs.mkdirSync(real);
+  fs.writeFileSync(path.join(real, "a.css"), "body{font-family:Inter,sans-serif}\n");
+  const ok = path.join(d, "ok");
+  fs.symlinkSync(real, ok);
+  const scanned = await scanTarget(ok);
+  assert.ok(ids(scanned).has("default-font"));
+  assert.equal(scanned.filesScanned, 1);
+});
+
 test("install.sh refuses a hostile ref and an old Node, and installs from the tarball curl saved", () => {
   const bad = spawnSync("sh", [path.join(ROOT, "install.sh")], { encoding: "utf8", env: { ...process.env, NON_SLOP_REF: "../evil" } });
   assert.notEqual(bad.status, 0);
