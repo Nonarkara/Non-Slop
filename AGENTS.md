@@ -12,6 +12,7 @@ This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, G
 - AI using a device doesn't make it slop. Em dashes, semicolons, serif type, warm paper, hairlines, humour and ornament are fine; their *misuse* (stretched, repeated, meaningless) is not.
 - Minimal is the floor, not the goal. A page can pass every rule and still be generic. The fix is to add something specific (a named reference, a real number, a point of view), not to delete more.
 - Never "make it sound less AI" on text the owner wrote. Their voice stays.
+- Every edit should help a reader do something or understand the subject better. Preserve meaningful choices; question generic ones. Quote the exact sentence and propose the smallest change before rewriting. No AI-likeness percentage, and no mistakes added so the text looks human. `skills/writing/SKILL.md`.
 - No `STYLE.md` yet? Anything consistent and clearly chosen gets asked about, not deleted. Offer to start one from `templates/STYLE.md`.
 
 ## 1. Before you code: write the brief
@@ -48,7 +49,7 @@ node .non-slop/bin/non-slop.mjs render http://localhost:3000   # needs Playwrigh
 
 ## 6. Before merge: a different reviewer
 
-**One agent builds; a different agent or person checks. Never self-review.** The reviewer renders the page and checks keyboard paths and visible focus, contrast, tap targets ≥44px, empty/loading/error states, 320px reflow, dense real data, all three languages, the map-first rule, and whether the primary action is obvious without explanation. The review lists **what was kept on purpose** as well as what was removed. Gate and report format: `skills/review/SKILL.md`.
+**One agent builds; a different agent or person checks. Never self-review.** The reviewer renders the page and checks keyboard paths and visible focus, contrast, tap targets ≥44px, empty/loading/error states, 320px reflow, dense real data, all three languages, the map-first rule, and whether the primary action is obvious without explanation. The review lists **what was kept on purpose** as well as what was removed. The same gate walks small interactions (readable labels, icon alignment, focus, loading, a second click that must not submit twice) and a real-task trial: a non-technical person or a different test agent finds X, downloads Y, and gets back without hints. The scanner cannot judge that trial. Gate and report format: `skills/review/SKILL.md`.
 
 Scale the gate to the stakes: a throwaway sketch needs the scan; anything public, civic or shipped to real users needs all of it.
 

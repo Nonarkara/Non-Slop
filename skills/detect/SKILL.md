@@ -16,7 +16,7 @@ node .non-slop/bin/non-slop.mjs scan .            # or: npx github:Nonarkara/Non
 node .non-slop/bin/non-slop.mjs scan https://example.org   # a live page's HTML + CSS
 ```
 
-Every rule, its fix and when to keep it: [CATALOG.md](CATALOG.md) (generated from the code). Verdict: **SLOP** at ≥8 points, or a P0 stacked with another P0/P1, or P0/P1 hits in ≥3 categories; **REVIEW** at 3–7. Points count each rule once, so ten shadows are one finding, not ten.
+Every rule, its fix and when to keep it: [CATALOG.md](CATALOG.md) (generated from the code). Verdict: **SLOP** at ≥8 points, or a P0 stacked with another P0/P1, or P0/P1 hits in ≥3 categories; **REVIEW** at 3–7. Points count each rule once, so ten shadows are one finding, not ten. A `generic-promise` hit is a different **REVIEW**: it quotes one empty sentence, adds no points, and does not rewrite the file. A phrase under Allow, or a phrase or marker under Protected voice, is not flagged.
 
 Keeping a choice: list it in `STYLE.md` under `## Allow` (`- rule glass: live video needs a legibility veil`), in a `## Signature` section of `AGENTS.md` (same list; an empty `STYLE.md` does not hide it), or inline with `non-slop-allow: glass -- reason` on the line or the line above. A `STYLE.md` in a subfolder counts for the files under it, and allows from folders above still count. `Style.md` is the same file as `STYLE.md`. Access rules (contrast, focus, alt, unnamed controls, lang, zoom, reduced motion) can't be allowed away; they show as **ASK-OWNER**.
 
@@ -48,11 +48,11 @@ Open the screenshots. Squint. Then check these by eye:
 | Drift | Font, radius, nav or footer changes between pages | Build every page from the same tokens |
 | Placeholder truth | "Loading…" forever, N/A, mock or simulated data on a public page | Real data with its date, or say plainly that it's missing |
 
-Never flag: em dashes, semicolons, a serif, warm paper, a single emoji in prose, humour, ornament the owner chose, a deliberate reading column with wide margins, an accessible table or a familiar back link.
+Never flag: em dashes, semicolons, a serif, warm paper, a single emoji in prose, humour, ornament the owner chose, a deliberate reading column with wide margins, an accessible table or a familiar back link, a phrase or marker listed under Protected voice, text inside a blockquote or q, or an ordinary word that happens to appear in an empty-promise phrase.
 
 ## 4. Fix in order
 
-1. P0 failures, then access failures that are still FAIL. **ASK-OWNER** means the owner already listed it: ask, don't edit. 2. The hierarchy (what wins). 3. Stretch and void. 4. Boxes, shadows, radii, pills (subtract). 5. Copy. 6. P2 polish. After each pass, re-scan and re-render. For every removal ask: **does this make the page more generic?** If yes, put it back.
+1. P0 failures, then access failures that are still FAIL. **ASK-OWNER** means the owner already listed it: ask, don't edit. 2. The hierarchy (what wins). 3. Stretch and void. 4. Boxes, shadows, radii, pills (subtract). 5. Copy. For a `generic-promise` hit, quote the sentence, say why it is empty, and propose the smallest edit. Do not paste a rewrite from the scan. 6. P2 polish. After each pass, re-scan and re-render. For every removal ask: **does this make the page more generic?** If yes, put it back.
 
 ## 5. Report
 
