@@ -457,6 +457,96 @@ test("Protected voice and allowlisted phrases parse; a prose Voice section does 
   assert.ok(s.warnings.some((w) => /too short/i.test(w)));
 });
 
+const shell = (body) => `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>${body}</body></html>`;
+
+test("a listed phrase that only contains the match does not hide other sentences, and a marker does not hide the rest of its line", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.html"), shell(`<p>Unlock your workflow.</p><p>Take your startup to new heights.</p>`));
+  let res = await scanTarget(d);
+  assert.equal(res.summary.points, 1);
+  assert.ok(res.findings.some((f) => f.id === "hype-copy" && f.status === "FAIL"));
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW" && /to new heights/i.test(f.detail)));
+  fs.writeFileSync(path.join(d, "STYLE.md"), "## Allow\n- phrase \"unlock your true potential in the field note\": not the sentence on the page\n- phrase \"The river rose to new heights of 2.4 metres in the field note\": not the sentence on the page\n");
+  res = await scanTarget(d);
+  assert.equal(res.summary.points, 1, "hype-copy still scores");
+  assert.equal(res.summary.review, 1);
+  assert.ok(res.findings.some((f) => f.id === "hype-copy" && f.status === "FAIL"));
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW"));
+
+  const line = tmp();
+  fs.writeFileSync(path.join(line, "a.html"), shell(`<p>Unlock a vibrant world of colour. Sanzo Wada printed 348.</p><p>Seamlessly unlock your workflow. Sanzo Wada kept the poster.</p>`));
+  res = await scanTarget(line);
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW"));
+  assert.equal(res.summary.points, 1);
+  fs.writeFileSync(path.join(line, "STYLE.md"), "## Protected voice\n- marker \"Sanzo Wada\": the colour book, on the next sentence\n");
+  res = await scanTarget(line);
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW" && /Unlock a vibrant world of colour/.test(f.detail)));
+  assert.ok(!/Sanzo Wada/.test(res.findings.find((f) => f.id === "generic-promise").detail));
+  assert.ok(res.findings.some((f) => f.id === "hype-copy" && f.status === "FAIL"));
+  assert.equal(res.summary.points, 1);
+});
+
+test("voice still covers the sentence itself: any case, a subfolder style.md, a parent phrase, a Signature, and Thai or Chinese markers", async () => {
+  const caps = tmp();
+  fs.writeFileSync(path.join(caps, "a.html"), shell(`<h1>UNLOCK A VIBRANT WORLD OF COLOUR</h1><p>Step into a world of possibilities.</p>`));
+  fs.writeFileSync(path.join(caps, "STYLE.md"), "## Protected voice\n- phrase \"unlock a vibrant world of colour\": the poster, any case\n");
+  let res = await scanTarget(caps);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise").length, 1);
+  assert.match(res.findings.find((f) => f.id === "generic-promise").detail, /possibilities/);
+
+  const tree = tmp();
+  fs.mkdirSync(path.join(tree, "apps/web"), { recursive: true });
+  fs.writeFileSync(path.join(tree, "apps/web/a.html"), shell(`<h1>Unlock a vibrant world of colour</h1><p>Step into a world of possibilities.</p>`));
+  fs.writeFileSync(path.join(tree, "apps/web/style.md"), "## Protected voice\n- phrase \"Unlock a vibrant world of colour\": kept in this folder\n");
+  res = await scanTarget(tree);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise").length, 1);
+  assert.match(res.findings.find((f) => f.id === "generic-promise").detail, /possibilities/);
+
+  const parent = tmp();
+  fs.mkdirSync(path.join(parent, "child"), { recursive: true });
+  fs.writeFileSync(path.join(parent, "STYLE.md"), "## Allow\n- phrase \"Unlock a vibrant world of colour\": inherited from the parent\n");
+  fs.writeFileSync(path.join(parent, "child/STYLE.md"), "## Allow\n- rule glass: the child has its own style file\n");
+  fs.writeFileSync(path.join(parent, "child/a.html"), shell(`<h1>Unlock a vibrant world of colour</h1><p>Step into a world of possibilities.</p>`));
+  res = await scanTarget(parent);
+  const childHits = res.findings.filter((f) => f.id === "generic-promise");
+  assert.equal(childHits.length, 1);
+  assert.match(childHits[0].detail, /possibilities/);
+
+  const signed = tmp();
+  fs.writeFileSync(path.join(signed, "AGENTS.md"), "## Signature\n- phrase \"Unlock a vibrant world of colour\": the poster\n");
+  fs.writeFileSync(path.join(signed, "a.html"), shell(`<h1>Unlock a vibrant world of colour</h1><p>Step into a world of possibilities.</p>`));
+  res = await scanTarget(signed);
+  assert.equal(res.findings.filter((f) => f.id === "generic-promise").length, 1);
+  assert.match(res.findings.find((f) => f.id === "generic-promise").detail, /possibilities/);
+
+  const marks = tmp();
+  fs.writeFileSync(path.join(marks, "a.html"), shell(`<p>Unlock a vibrant world of colour ที่บางมด</p><p>Step into a world of possibilities.</p><p>Dive into a world of 三藏和田.</p>`));
+  fs.writeFileSync(path.join(marks, "STYLE.md"), "## Protected voice\n- marker \"บางมด\": the station\n- marker \"三藏和田\": the name\n");
+  res = await scanTarget(marks);
+  const left = res.findings.filter((f) => f.id === "generic-promise");
+  assert.equal(left.length, 1);
+  assert.match(left[0].detail, /possibilities/);
+
+  const quotes = tmp();
+  fs.writeFileSync(path.join(quotes, "a.html"), shell(`<blockquote><blockquote><p>Unlock a vibrant world of colour</p></blockquote></blockquote><Q><em>Step into a world of possibilities.</em></Q><q cite="poster">Dive into a world of colour.</q><p>Take your startup to new heights.</p>`));
+  res = await scanTarget(quotes);
+  const after = res.findings.filter((f) => f.id === "generic-promise");
+  assert.equal(after.length, 1);
+  assert.match(after[0].detail, /to new heights/i);
+});
+
+test("a 1 MB line of unclosed q tags scans in under a second", { timeout: 5000 }, async () => {
+  const d = tmp();
+  const tags = "<q>".repeat(Math.ceil(1_000_000 / 3));
+  assert.ok(Buffer.byteLength(tags) >= 1_000_000);
+  fs.writeFileSync(path.join(d, "a.html"), `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>\n${tags}\n<p>Take your startup to new heights.</p></body></html>`);
+  const t0 = performance.now();
+  const res = await scanTarget(d);
+  const ms = performance.now() - t0;
+  assert.ok(ms < 1000, `scan took ${ms.toFixed(0)} ms`);
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW"), "an unclosed q does not swallow the sentence after it");
+});
+
 test("the writing docs keep the principle, the refusal, and the trial the scanner cannot judge", () => {
   const writing = fs.readFileSync(path.join(ROOT, "skills/writing/SKILL.md"), "utf8");
   const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");

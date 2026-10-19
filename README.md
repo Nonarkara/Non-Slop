@@ -95,7 +95,7 @@ Fill in `STYLE.md`. The prose sections tell agents what's deliberate (type, colo
 
 Or inline, in code: `/* non-slop-allow: glass -- legibility over live video */`.
 
-A phrase in that list, and every phrase or marker under Protected voice, is not flagged. Listing the rule `generic-promise` still reports it as **ALLOWED**, and it is not scored.
+A sentence that contains a listed phrase, or a Protected voice phrase or marker, is not flagged. A listed phrase does not hide a different sentence, and a marker does not hide the other sentences on its line. Listing the rule `generic-promise` still reports it as **ALLOWED**, and it is not scored.
 
 Allowed hits show as **ALLOWED** and cost nothing. A `## Signature` section in `AGENTS.md` is read the same way, including when `STYLE.md` exists but its Allow section is still empty. A `STYLE.md` in a subfolder covers the files under it, and allows from parent folders still apply. `Style.md` and `STYLE.md` are the same file. Accessibility rules (contrast, focus, alt text, unnamed controls, lang, zoom, reduced motion) can't be allowed away: they show as **ASK-OWNER**, so the agent raises them with you instead of quietly changing your design. Before removing anything, the agent asks: *would removing this make the page more generic? Then keep it.*
 
