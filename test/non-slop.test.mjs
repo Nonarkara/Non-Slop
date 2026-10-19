@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { execFileSync, spawnSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
-import { scanTarget } from "../lib/scan.mjs";
+import { scanTarget, MAX_SCAN_BYTES } from "../lib/scan.mjs";
 import { parseStyle, inlineAllows } from "../lib/style.mjs";
 import { init, adapters } from "../lib/init.mjs";
 import { catalogMarkdown } from "../lib/catalog.mjs";
@@ -143,4 +143,257 @@ test("init into an existing CLAUDE.md adds the imports inside the marked block",
   const t = fs.readFileSync(path.join(d, "CLAUDE.md"), "utf8");
   assert.ok(t.startsWith("# Mine\nUse pnpm.\n"));
   assert.match(t, /<!-- non-slop:start -->[\s\S]*@\.non-slop\/AGENTS\.md[\s\S]*<!-- non-slop:end -->/);
+});
+
+test("Signature (any case) suppresses findings, and an empty STYLE.md does not hide it", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.css"), "body{background:#fbf7ef;color:#1f1a17} h1{color:#a23a26}\n");
+  fs.writeFileSync(path.join(d, "AGENTS.md"), "# Mine\r\n## signature\r\n- rule cream-terracotta: house paper\r\n");
+  let res = await scanTarget(d);
+  assert.equal(res.findings.find((f) => f.id === "cream-terracotta").status, "ALLOWED");
+  fs.writeFileSync(path.join(d, "STYLE.md"), "# prose only\n\nNo allow section yet.\n");
+  res = await scanTarget(d);
+  assert.equal(res.findings.find((f) => f.id === "cream-terracotta").status, "ALLOWED");
+  assert.equal(res.summary.points, 0);
+});
+
+test("Style.md in any case is the style file, including under a subfolder", async () => {
+  const d = tmp();
+  fs.mkdirSync(path.join(d, "apps/web"), { recursive: true });
+  fs.mkdirSync(path.join(d, "apps/other"), { recursive: true });
+  const css = ".v{backdrop-filter:blur(8px)}\n";
+  fs.writeFileSync(path.join(d, "apps/web/a.css"), css);
+  fs.writeFileSync(path.join(d, "apps/other/b.css"), css);
+  fs.writeFileSync(path.join(d, "apps/web/Style.md"), "## Allow\n- rule glass: nested blur over a photo\n");
+  fs.writeFileSync(path.join(d, "Style.md"), "# Owner notes\n\nNo allow section.\n");
+  const res = await scanTarget(d);
+  const glass = res.findings.filter((f) => f.id === "glass");
+  assert.equal(glass.find((f) => f.rel.startsWith("apps/web/")).status, "ALLOWED");
+  assert.equal(glass.find((f) => f.rel.startsWith("apps/other/")).status, "FAIL");
+  const owned = fs.readFileSync(path.join(d, "Style.md"), "utf8");
+  const log = init(d, { hook: false });
+  assert.equal(fs.existsSync(path.join(d, "STYLE.md")), false);
+  assert.ok(log.some((l) => l.startsWith("Style.md: exists")));
+  assert.equal(fs.readFileSync(path.join(d, "Style.md"), "utf8"), owned);
+  assert.ok(fs.readFileSync(path.join(d, "apps/web/Style.md"), "utf8").includes("nested blur"));
+});
+
+test("scanning a parent still honours a nested STYLE.md", async () => {
+  const res = await scanTarget(FX);
+  const cream = res.findings.filter((f) => f.id === "cream-terracotta");
+  assert.ok(cream.length >= 1);
+  assert.ok(cream.every((f) => f.status === "ALLOWED"));
+});
+
+test("a place-items centred hero with a 3-card grid and SaaS copy is SLOP", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "index.html"), `<html lang="en">
+<head><meta name="viewport" content="width=device-width, initial-scale=1"></head>
+<body>
+<section class="grid place-items-center min-h-screen">
+  <h1>Supercharge your workflow</h1>
+  <p>Seamlessly unlock your team's potential with our cutting-edge platform.</p>
+  <button class="rounded-xl">Get Started</button>
+  <button class="rounded-xl">Learn More</button>
+</section>
+<section class="grid grid-cols-3">
+  <div class="rounded-xl shadow-md p-6 bg-white">One</div>
+  <div class="rounded-xl shadow-md p-6 bg-white">Two</div>
+  <div class="rounded-xl shadow-md p-6 bg-white">Three</div>
+</section>
+</body></html>`);
+  const res = await scanTarget(d);
+  assert.ok(ids(res).has("centered-hero"));
+  assert.ok(ids(res).has("card-grid-3"));
+  assert.ok(ids(res).has("hype-copy"));
+  assert.equal(res.summary.verdict, "SLOP");
+  const r = spawnSync(process.execPath, [CLI, "scan", d], { encoding: "utf8" });
+  assert.equal(r.status, 2);
+});
+
+test("a deliberate gauge board is not slop, and a lone Inter link is only a question", async () => {
+  const res = await scanTarget(path.join(FX, "gauge"));
+  assert.equal(res.summary.verdict, "OK");
+  assert.equal(res.summary.points, 0);
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "index.html"), '<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap" rel="stylesheet"></head><body><p>Hello</p></body></html>');
+  const one = await scanTarget(d);
+  assert.ok(ids(one).has("default-font"));
+  assert.equal(one.summary.verdict, "OK");
+});
+
+test("ai-visual still matches a host and a file name", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.html"), '<html lang="en"><head><meta name="viewport" content="width=device-width"></head><body><img alt="" src="shots/hero-midjourney-v6.png"><img alt="" src="https://cdn.midjourney.com/a.png"></body></html>\n');
+  const res = await scanTarget(d);
+  assert.ok(ids(res).has("ai-visual"));
+});
+
+test("one P0 is REVIEW (exit 0); --fail-on=P0 exits 2; --fail-on=never exits 0", () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.css"), "h1{background:#222;-webkit-background-clip:text;color:transparent}\n");
+  const review = spawnSync(process.execPath, [CLI, "scan", d], { encoding: "utf8" });
+  assert.equal(review.status, 0);
+  assert.match(review.stdout, /Verdict: REVIEW/);
+  assert.equal(spawnSync(process.execPath, [CLI, "scan", d, "--fail-on=P0"], { encoding: "utf8" }).status, 2);
+  assert.equal(spawnSync(process.execPath, [CLI, "scan", d, "--fail-on=never"], { encoding: "utf8" }).status, 0);
+});
+
+test("access rules listed by the owner are ASK-OWNER and add no points", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.css"), "button{outline:none}\n.x{color:#aaaaaa;background:#ffffff}\n@keyframes a{from{opacity:0}to{opacity:1}}\n");
+  fs.writeFileSync(path.join(d, "a.html"), '<html><head></head><body><img src="a.png"><button><svg></svg></button></body></html>\n');
+  fs.writeFileSync(path.join(d, "STYLE.md"), "## Allow\n" + ["low-contrast", "reduced-motion", "img-alt", "unnamed-button", "focus-removed", "html-lang", "viewport"].map((id) => `- rule ${id}: the owner knows`).join("\n") + "\n");
+  const res = await scanTarget(d);
+  const access = res.findings.filter((f) => ["low-contrast", "reduced-motion", "img-alt", "unnamed-button", "focus-removed", "html-lang", "viewport"].includes(f.id));
+  assert.ok(access.length >= 6);
+  assert.ok(access.every((f) => f.status === "ASK-OWNER"));
+  assert.equal(res.summary.points, 0);
+  assert.equal(res.summary.verdict, "OK");
+});
+
+test("symlinks are scanned once, cycles end, binary and oversized files are named and not scored", async () => {
+  const d = tmp();
+  const real = path.join(d, "real");
+  fs.mkdirSync(real);
+  fs.writeFileSync(path.join(real, "a.css"), "body{background:linear-gradient(#6366f1,#a855f7)}\n");
+  fs.symlinkSync("real", path.join(d, "linked"));
+  fs.symlinkSync("..", path.join(real, "up"));
+  const outside = tmp();
+  fs.writeFileSync(path.join(outside, "slop.css"), "body{font-family:Inter,sans-serif}\n");
+  fs.symlinkSync(path.join(outside, "slop.css"), path.join(d, "via.css"));
+  fs.writeFileSync(path.join(d, "bin.css"), Buffer.concat([Buffer.from([0, 1, 2, 0]), Buffer.from("linear-gradient(#6366f1,#a855f7)")]));
+  fs.writeFileSync(path.join(d, "big.css"), Buffer.concat([Buffer.from("body{background:linear-gradient(#6366f1,#a855f7)}\n"), Buffer.alloc(MAX_SCAN_BYTES, 0x61)]));
+  const before = fs.readdirSync(d).sort();
+  const res = await scanTarget(d);
+  assert.deepEqual(fs.readdirSync(d).sort(), before);
+  assert.ok(ids(res).has("purple-gradient"));
+  assert.ok(ids(res).has("default-font"));
+  assert.ok(!res.findings.some((f) => f.rel === "bin.css" || f.rel === "big.css"));
+  assert.match(res.note.join("\n"), /bin\.css \(binary\)/);
+  assert.match(res.note.join("\n"), /big\.css \(over 8 MB\)/);
+  const mid = tmp();
+  fs.writeFileSync(path.join(mid, "big.css"), "body{background:linear-gradient(#6366f1,#a855f7)}\n" + "a".repeat(2_000_000));
+  const scanned = await scanTarget(mid);
+  assert.ok(ids(scanned).has("purple-gradient"));
+});
+
+test("a local scan does not call fetch", async () => {
+  const orig = globalThis.fetch;
+  let calls = 0;
+  globalThis.fetch = () => { calls++; throw new Error("network"); };
+  try {
+    const res = await scanTarget(path.join(FX, "essay"));
+    assert.equal(calls, 0);
+    assert.equal(res.summary.verdict, "OK");
+  } finally { globalThis.fetch = orig; }
+});
+
+test("init appends to an existing GEMINI.md once, and does not follow symlinks", () => {
+  const d = tmp();
+  execFileSync("git", ["init", "-q"], { cwd: d });
+  fs.writeFileSync(path.join(d, "GEMINI.md"), "# Gemini\nBe brief.\n");
+  const outside = path.join(tmp(), "AGENTS.md");
+  fs.writeFileSync(outside, "# outside\n");
+  fs.symlinkSync(outside, path.join(d, "AGENTS.md"));
+  init(d, { hook: false }); init(d, { hook: false });
+  const gemini = fs.readFileSync(path.join(d, "GEMINI.md"), "utf8");
+  assert.ok(gemini.startsWith("# Gemini\nBe brief.\n"));
+  assert.equal(gemini.split("<!-- non-slop:start -->").length, 2);
+  assert.equal(fs.readFileSync(outside, "utf8"), "# outside\n");
+});
+
+test("init does not write through a directory symlink or a broken hook symlink", () => {
+  const d = tmp();
+  execFileSync("git", ["init", "-q"], { cwd: d });
+  const outside = tmp();
+  const gh = path.join(outside, "gh");
+  const cursor = path.join(outside, "cursor");
+  fs.mkdirSync(gh);
+  fs.mkdirSync(cursor);
+  fs.symlinkSync(gh, path.join(d, ".github"));
+  fs.symlinkSync(cursor, path.join(d, ".cursor"));
+  fs.symlinkSync(path.join(outside, "missing-hook"), path.join(d, ".git/hooks/pre-commit"));
+  const log = init(d);
+  assert.deepEqual(fs.readdirSync(gh), []);
+  assert.deepEqual(fs.readdirSync(cursor), []);
+  assert.equal(fs.existsSync(path.join(outside, "missing-hook")), false);
+  assert.equal(fs.lstatSync(path.join(d, ".git/hooks/pre-commit")).isSymbolicLink(), true);
+  const text = log.join("\n");
+  assert.match(text, /\.github\/copilot-instructions\.md: skipped \(symlink \.github -> /);
+  assert.match(text, /\.cursor\/rules\/non-slop\.mdc: skipped \(symlink \.cursor -> /);
+  assert.match(text, /hook: skipped \(symlink \.git\/hooks\/pre-commit -> /);
+  assert.ok(fs.readFileSync(path.join(d, "AGENTS.md"), "utf8").includes("non-slop"));
+});
+
+test("init does not install a hook whose path resolves outside the project", () => {
+  const d = tmp();
+  const gitdir = path.join(tmp(), "gitdir");
+  execFileSync("git", ["init", "-q", `--separate-git-dir=${gitdir}`], { cwd: d });
+  const hook = path.join(gitdir, "hooks", "pre-commit");
+  assert.equal(fs.existsSync(hook), false);
+  const log = init(d);
+  assert.equal(fs.existsSync(hook), false);
+  assert.equal(fs.existsSync(path.join(d, "tmp")), false);
+  assert.ok(log.some((l) => l.startsWith("hook: skipped (outside the project")));
+  assert.ok(fs.readFileSync(path.join(d, "AGENTS.md"), "utf8").includes("non-slop"));
+});
+
+test("a symlink used as the scan root into /proc, /sys, /dev, /run, or / is named and not walked", { timeout: 8000 }, async () => {
+  const d = tmp();
+  const targets = ["/proc", "/sys", "/dev", "/run", "/"].filter((p) => fs.existsSync(p));
+  assert.ok(targets.includes("/proc") && targets.includes("/"));
+  for (const t of targets) {
+    const link = path.join(d, "link-" + (t === "/" ? "root" : t.slice(1)));
+    fs.symlinkSync(t, link);
+    const res = await scanTarget(link);
+    assert.equal(res.filesScanned, 0, t);
+    assert.match(res.note.join("\n"), new RegExp(`skipped symlink .*\\(resolves to ${t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\)`));
+  }
+  const real = path.join(d, "real");
+  fs.mkdirSync(real);
+  fs.writeFileSync(path.join(real, "a.css"), "body{font-family:Inter,sans-serif}\n");
+  const ok = path.join(d, "ok");
+  fs.symlinkSync(real, ok);
+  const scanned = await scanTarget(ok);
+  assert.ok(ids(scanned).has("default-font"));
+  assert.equal(scanned.filesScanned, 1);
+});
+
+test("install.sh refuses a hostile ref and an old Node, and installs from the tarball curl saved", () => {
+  const bad = spawnSync("sh", [path.join(ROOT, "install.sh")], { encoding: "utf8", env: { ...process.env, NON_SLOP_REF: "../evil" } });
+  assert.notEqual(bad.status, 0);
+  assert.match(bad.stderr, /refusing NON_SLOP_REF/);
+  const bin = tmp();
+  fs.writeFileSync(path.join(bin, "node"), "#!/bin/sh\nif [ \"$1\" = \"-p\" ]; then echo 16; exit 0; fi\necho v16.20.0\n");
+  fs.chmodSync(path.join(bin, "node"), 0o755);
+  fs.writeFileSync(path.join(bin, "curl"), "#!/bin/sh\necho curl-should-not-run >&2; exit 9\n");
+  fs.chmodSync(path.join(bin, "curl"), 0o755);
+  const old = spawnSync("sh", [path.join(ROOT, "install.sh")], { encoding: "utf8", env: { ...process.env, PATH: `${bin}:${process.env.PATH}`, NON_SLOP_REF: "main" } });
+  assert.notEqual(old.status, 0);
+  assert.match(old.stderr, /Node 18/);
+  assert.doesNotMatch(old.stderr, /curl-should-not-run/);
+
+  const d = tmp();
+  execFileSync("git", ["init", "-q"], { cwd: d });
+  fs.writeFileSync(path.join(d, "AGENTS.md"), "# Keep\n");
+  fs.writeFileSync(path.join(d, "notes.txt"), "do not lose\n");
+  const pack = tmp();
+  const tarball = path.join(pack, "src.tgz");
+  execFileSync("tar", ["-czf", tarball, "-C", ROOT, "--exclude", ".git", "--transform", "s,^,Non-Slop-test/," , "."]);
+  const curlBin = path.join(pack, "bin");
+  fs.mkdirSync(curlBin);
+  fs.writeFileSync(path.join(curlBin, "curl"), `#!/bin/sh\nout=""\nwhile [ $# -gt 0 ]; do\n  if [ "$1" = "-o" ]; then out=$2; shift 2; continue; fi\n  shift\ndone\ncp ${JSON.stringify(tarball)} "$out"\n`);
+  fs.chmodSync(path.join(curlBin, "curl"), 0o755);
+  const env = { ...process.env, PATH: `${curlBin}:${process.env.PATH}` };
+  const run = () => spawnSync("sh", [path.join(ROOT, "install.sh")], { cwd: d, encoding: "utf8", env });
+  const first = run();
+  assert.equal(first.status, 0, first.stderr + first.stdout);
+  const second = run();
+  assert.equal(second.status, 0, second.stderr + second.stdout);
+  const agents = fs.readFileSync(path.join(d, "AGENTS.md"), "utf8");
+  assert.ok(agents.startsWith("# Keep\n"));
+  assert.equal(agents.split("<!-- non-slop:start -->").length, 2);
+  assert.equal(fs.readFileSync(path.join(d, "notes.txt"), "utf8"), "do not lose\n");
+  assert.ok(fs.existsSync(path.join(d, ".non-slop/bin/non-slop.mjs")));
 });

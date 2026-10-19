@@ -8,7 +8,7 @@ This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, G
 
 - Read `STYLE.md` (or the `## Signature` section of `AGENTS.md`) first. Never strip, "fix" or flag anything it lists. If a listed choice seems to cause a real problem (contrast, legibility, a broken layout), ask the owner. Don't change it.
 - Before you remove anything, ask: **would removing this make the page more generic? Then keep it.** Would it make the page clearer, smaller or more honest? Then remove it.
-- Judge the stack, not the item. One serif headline, one emoji, one gradient or one rounded corner is a choice. Inter + purple gradient + three identical cards + "seamlessly" is a fingerprint.
+- Judge the stack, not the item. One serif headline, one emoji in prose, one gradient with a job, or one rounded corner is a choice. Inter + purple gradient + three identical cards + "seamlessly" is a fingerprint.
 - AI using a device doesn't make it slop. Em dashes, semicolons, serif type, warm paper, hairlines, humour and ornament are fine; their *misuse* (stretched, repeated, meaningless) is not.
 - Minimal is the floor, not the goal. A page can pass every rule and still be generic. The fix is to add something specific (a named reference, a real number, a point of view), not to delete more.
 - Never "make it sound less AI" on text the owner wrote. Their voice stays.
@@ -23,7 +23,7 @@ Five lines, in the PR or the design file: **who** uses it, the page's **one job*
 - Reuse the repo's design system and tokens. Don't invent a new look per page. No system yet? Define semantic colours, a spacing scale, a type scale (≤8 sizes), one radius system, states (hover, focus, disabled, loading, empty, error) and breakpoints before the first component.
 - **Empty space is a decision.** Decide what the space is for, usually the map, the data or the reading column, and give it that. Don't stretch small things to fill it; don't leave it dead by accident.
 - **Subtract before you add.** Slop often starts as a small element (a card, a box, a chip) blown up to fill space. Before adding a box, shadow, radius or badge, remove one.
-- House limits per screen, unless `STYLE.md` says otherwise: ≤15 boxes, ≤3 drop shadows, one radius system, ≤5 pills or badges, ≤8 font sizes, 0 emoji as UI icons, 0 decorative gradients or glass, no modal on first load, light by default. Prose ≤65ch (about 30–45 Chinese characters). A small thing is never more than 2× wider or 1.6× taller than its content.
+- House limits per screen, unless `STYLE.md` says otherwise: ≤15 boxes, ≤3 drop shadows, one radius system, ≤5 pills or badges, ≤8 font sizes, no emoji used as UI icons, no decorative gradient or glass added without a job, no modal on first load, light by default. These limits are about what you add. A single choice that already has a job stays; if `STYLE.md` or `## Signature` lists it, it is not stripped. Prose ≤65ch (about 30–45 Chinese characters). A small thing is never more than 2× wider or 1.6× taller than its content.
 - Something must win: one obvious first look, with a real step in size (1.5–2×), weight or colour to the next level.
 - Use real, realistically shaped content early: long Thai and German labels, missing data, errors, 10× the rows.
 - Words: verb + object on buttons, no filler ("seamless", "unlock", "supercharge"), no fake stats, testimonials or logo clouds.
@@ -44,7 +44,7 @@ node .non-slop/bin/non-slop.mjs scan .                 # source tells, honours S
 node .non-slop/bin/non-slop.mjs render http://localhost:3000   # needs Playwright
 ```
 
-(Inside the Non-Slop repo itself, or with npx: `npx github:Nonarkara/Non-Slop scan .`.) Then open the screenshots at 1440, 1024 and 390, and the **silhouette**: if the block outline could belong to any SaaS landing page, redesign the hierarchy, not the colours. Fix every SLOP hit that isn't ALLOWED; explain or fix every REVIEW hit. The scanner is a screen, not a judge. Catalog and fixes: `skills/detect/`.
+(Inside the Non-Slop repo itself, or with npx: `npx github:Nonarkara/Non-Slop scan .`.) Then open the screenshots at 1440, 1024 and 390, and the **silhouette**: if the block outline could belong to any SaaS landing page, redesign the hierarchy, not the colours. Fix every SLOP hit that isn't ALLOWED. A hit marked **ASK-OWNER** is an access rule the owner already listed (contrast, focus, alt, an unnamed control, lang, zoom, reduced motion): raise it, don't change it. Explain or fix every REVIEW hit. The scanner is a screen, not a judge. Catalog and fixes: `skills/detect/`.
 
 ## 6. Before merge: a different reviewer
 
