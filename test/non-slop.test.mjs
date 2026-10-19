@@ -547,6 +547,22 @@ test("a 1 MB line of unclosed q tags scans in under a second", { timeout: 5000 }
   assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW"), "an unclosed q does not swallow the sentence after it");
 });
 
+test("a 1 MB line of mismatched quote tags scans in under a second", { timeout: 5000 }, async () => {
+  const d = tmp();
+  const run = 20000;
+  // Opens of one name, then ends of the other: a stray end used to walk the whole open stack.
+  const stray = "<q>".repeat(run) + "</blockquote>".repeat(run) + "<blockquote>".repeat(run) + "</q>".repeat(run);
+  const mixed = "<q></blockquote><blockquote></q>";
+  const tags = stray + mixed.repeat(Math.ceil((1_000_000 - Buffer.byteLength(stray)) / Buffer.byteLength(mixed)));
+  assert.ok(Buffer.byteLength(tags) >= 1_000_000);
+  fs.writeFileSync(path.join(d, "a.html"), `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"></head><body>\n${tags}\n<p>Take your startup to new heights.</p></body></html>`);
+  const t0 = performance.now();
+  const res = await scanTarget(d);
+  const ms = performance.now() - t0;
+  assert.ok(ms < 1000, `scan took ${ms.toFixed(0)} ms`);
+  assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW" && /to new heights/i.test(f.detail)), "a stray end tag does not swallow the sentence after it");
+});
+
 test("the writing docs keep the principle, the refusal, and the trial the scanner cannot judge", () => {
   const writing = fs.readFileSync(path.join(ROOT, "skills/writing/SKILL.md"), "utf8");
   const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");
