@@ -128,3 +128,19 @@ test("render: reading column is not void (skipped without Playwright)", async (t
   assert.ok(!r.hits.some((h) => h.id === "emoji-icons"));
   assert.ok(fs.existsSync(r.silhouette));
 });
+
+test("--min trims the listing, never the verdict", async () => {
+  const full = await scanTarget(path.join(FX, "slop"));
+  const trimmed = await scanTarget(path.join(FX, "slop"), { min: "P0" });
+  assert.deepEqual(trimmed.summary, full.summary);
+  assert.ok(trimmed.findings.every((f) => f.sev === "P0"));
+});
+
+test("init into an existing CLAUDE.md adds the imports inside the marked block", () => {
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), "ns-claude-"));
+  fs.writeFileSync(path.join(d, "CLAUDE.md"), "# Mine\nUse pnpm.\n");
+  init(d, { hook: false });
+  const t = fs.readFileSync(path.join(d, "CLAUDE.md"), "utf8");
+  assert.ok(t.startsWith("# Mine\nUse pnpm.\n"));
+  assert.match(t, /<!-- non-slop:start -->[\s\S]*@\.non-slop\/AGENTS\.md[\s\S]*<!-- non-slop:end -->/);
+});
