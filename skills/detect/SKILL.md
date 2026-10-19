@@ -20,6 +20,8 @@ Every rule, its fix and when to keep it: [CATALOG.md](CATALOG.md) (generated fro
 
 Keeping a choice: list it in `STYLE.md` under `## Allow` (`- rule glass: live video needs a legibility veil`), in a `## Signature` section of `AGENTS.md` (same list; an empty `STYLE.md` does not hide it), or inline with `non-slop-allow: glass -- reason` on the line or the line above. A `STYLE.md` in a subfolder counts for the files under it, and allows from folders above still count. `Style.md` is the same file as `STYLE.md`. Access rules (contrast, focus, alt, unnamed controls, lang, zoom, reduced motion) can't be allowed away; they show as **ASK-OWNER**.
 
+Skipping a whole file: put `non-slop-skip-file: <why>` in its first line, as a comment or an HTML comment. The scan still names the file, under `not scanned:`, with the reason — every exclusion is reported, so a clean scan and a scan that read nothing never look the same. Use it for files that are not UI (scanner code, a generated bundle, a vendored library), and give the reason: a reviewer has to be able to ask why. Marking a page to clear a hit is the same move as deleting the finding.
+
 ## 2. Render it
 
 ```bash
