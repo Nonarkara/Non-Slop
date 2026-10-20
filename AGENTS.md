@@ -15,6 +15,8 @@ This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, G
 - Every edit should help a reader do something or understand the subject better. Preserve meaningful choices; question generic ones. Quote the exact sentence and propose the smallest change before rewriting. No AI-likeness percentage, and no mistakes added so the text looks human. `skills/writing/SKILL.md`.
 - No `STYLE.md` yet? Anything consistent and clearly chosen gets asked about, not deleted. Offer to start one from `templates/STYLE.md`.
 
+For composition, image placement, narrative heroes or unexplained gaps, read [Anti-spatial-hallucination](ANTI-SPATIAL-HALLUCINATION.md). Decide the image’s role and its relationship to the task before changing its size. The overlay gate does not relax this project’s style or access rules.
+
 ## 1. Before you code: write the brief
 
 Five lines, in the PR or the design file: **who** uses it, the page's **one job**, the **hierarchy** (what wins first, second, third), the **constraints** (languages, devices, data), and a **visual direction taken from the subject's own world** (its materials, documents, maps, vernacular), not a style label. Then review the brief against the defaults: if you'd have made the same choice for any similar page, it's a default; change it. Method and domain presets: `skills/direction/SKILL.md`.

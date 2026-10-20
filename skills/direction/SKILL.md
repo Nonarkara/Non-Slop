@@ -71,3 +71,7 @@ Paraphrased from Harsh Vijay, *11 Website Design Best Practices To Follow In 202
 11. Change one thing at a time and watch what people do; don't invent an A/B winner from a handful of sessions.
 
 Not adopted: the article's conversion-first framing, its "powerful action verbs" advice and its statistics. A reading or operating surface doesn't need a sales CTA.
+
+## Spatial relationships
+
+For image scale, placement, narrative scenes, overlays or unexplained gaps, read [Anti-spatial-hallucination](../../ANTI-SPATIAL-HALLUCINATION.md). Check image role, semantic proximity and responsive fallback; do not treat a scanner score as narrative or overlay-legibility proof.

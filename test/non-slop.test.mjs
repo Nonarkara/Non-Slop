@@ -297,6 +297,7 @@ test("init appends to an existing GEMINI.md once, and does not follow symlinks",
   fs.writeFileSync(outside, "# outside\n");
   fs.symlinkSync(outside, path.join(d, "AGENTS.md"));
   init(d, { hook: false }); init(d, { hook: false });
+  assert.equal(fs.readFileSync(path.join(d, ".non-slop/ANTI-SPATIAL-HALLUCINATION.md"), "utf8"), fs.readFileSync(path.join(ROOT, "ANTI-SPATIAL-HALLUCINATION.md"), "utf8"), "installed composition guidance must travel with its agent links");
   const gemini = fs.readFileSync(path.join(d, "GEMINI.md"), "utf8");
   assert.ok(gemini.startsWith("# Gemini\nBe brief.\n"));
   assert.equal(gemini.split("<!-- non-slop:start -->").length, 2);

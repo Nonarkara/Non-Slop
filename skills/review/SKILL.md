@@ -69,3 +69,7 @@ Not verified: <what you couldn't check, e.g. fluent Thai reading, real device>
 Name the evidence for every claim. Don't score taste. Don't invent measurements, users or praise.
 
 Pillars adapted from Microsoft's frontend-design-review skill (frictionless insight to action, quality craft, trustworthy building; framework by @Quirinevwm). See CREDITS.md.
+
+## Spatial relationships
+
+For image scale, placement, narrative scenes, overlays or unexplained gaps, read [Anti-spatial-hallucination](../../ANTI-SPATIAL-HALLUCINATION.md). Check image role, semantic proximity and responsive fallback; do not treat a scanner score as narrative or overlay-legibility proof.

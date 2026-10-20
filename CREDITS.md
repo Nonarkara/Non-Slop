@@ -41,3 +41,7 @@ These were considered and are not rules here.
 - Fixed corner radii, shadow recipes, and a required press-scale. Jakub Krehel's skill contains these; they were not adopted. An owner's radius and shadow live in `STYLE.md`.
 
 Nobody listed here endorses Non-Slop.
+
+## Spatial hallucination
+
+The term, governing question and composition method come from Non Arkaraprasertkul’s design reviews, consolidated with Codex on 20 October 2026. The original [guide](ANTI-SPATIAL-HALLUCINATION.md) is MIT; its accessibility references link to W3C guidance rather than reproducing that guidance. No private reference image is included.

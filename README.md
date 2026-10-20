@@ -102,3 +102,7 @@ Allowed hits show as **ALLOWED** and cost nothing. A `## Signature` section in `
 ## Credits
 
 Built from Non Arkaraprasertkul's own anti-slop rules, Palette's slop-lint and a measured study of 31 citizen-built flood apps, plus ideas from funboy322/avoid-ai-design, Vanszs/Anti-AI-UI, Anthropic's frontend-design skill, Microsoft's frontend-design-review skill, kari-ai-lab's design principles, Ruttl's web-design practices, Peter Yang's no-ai-slop review workflow and Jakub Krehel's interface-detail checks. The writing principle comes from Rakesh Mahanti's Instagram carousel, credited as a link only. Details and licences: [CREDITS.md](CREDITS.md). MIT licence.
+
+## Anti-spatial-hallucination
+
+[The composition guide](ANTI-SPATIAL-HALLUCINATION.md) asks why each element is here, this size and this far from its neighbour. It covers image roles, narrative heroes, readable overlays, purposeful whitespace, action grouping and responsive evidence. Hero treatment is a choice to justify, not a new template.

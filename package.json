@@ -4,7 +4,7 @@
   "description": "Plug-and-play anti-slop design rules, skills and a zero-dependency scanner for AI coding agents. Removes defaults nobody chose; protects choices somebody made.",
   "type": "module",
   "bin": { "non-slop": "bin/non-slop.mjs" },
-  "files": ["AGENTS.md", "CREDITS.md", "LICENSE", "README.md", "bin", "lib", "skills", "templates", "install.sh"],
+  "files": ["ANTI-SPATIAL-HALLUCINATION.md", "AGENTS.md", "CREDITS.md", "LICENSE", "README.md", "bin", "lib", "skills", "templates", "install.sh"],
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "catalog": "node bin/non-slop.mjs rules --md > skills/detect/CATALOG.md"
