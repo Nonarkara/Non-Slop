@@ -618,3 +618,24 @@ test("install.sh refuses a hostile ref and an old Node, and installs from the ta
   assert.equal(fs.readFileSync(path.join(d, "notes.txt"), "utf8"), "do not lose\n");
   assert.ok(fs.existsSync(path.join(d, ".non-slop/bin/non-slop.mjs")));
 });
+
+test("a skip marker is reported, never silent", async () => {
+  // A marker comment buys a clean scan. It is the one exclusion a person or
+  // an agent can use to silence a finding, so it must appear in the output
+  // exactly like every other skip. This is the difference between "OK, 0
+  // items" and "OK, 0 items because everything was excluded".
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "page.html"), "<!doctype html><meta name=viewport content='width=device-width, initial-scale=1'><p>Hello, this is a short line of prose for the scanner to read.</p>");
+  fs.writeFileSync(path.join(d, "marked.html"), "<!-- non-slop-skip-file: deliberately excluded -->\n<p>Another short line of prose here.</p>");
+  const res = await scanTarget(d);
+  assert.ok(res.note.length > 0, "a skipped file must produce a note");
+  assert.match(res.note.join(" "), /not scanned: marked\.html \(marked skip\)/, "the marker skip must be named");
+  assert.ok(!res.note.join(" ").includes("page.html"), "a scanned file must not be listed as skipped");
+  // The count must move when the marker is lifted, and the note must not stay empty.
+  const withMarker = res.filesScanned;
+  const prev = process.env.NON_SLOP_INCLUDE_EXAMPLES;
+  process.env.NON_SLOP_INCLUDE_EXAMPLES = "1";
+  const res2 = await scanTarget(d);
+  if (prev === undefined) delete process.env.NON_SLOP_INCLUDE_EXAMPLES; else process.env.NON_SLOP_INCLUDE_EXAMPLES = prev;
+  assert.ok(res2.filesScanned > withMarker, `including examples must scan more files (${withMarker} vs ${res2.filesScanned})`);
+});
