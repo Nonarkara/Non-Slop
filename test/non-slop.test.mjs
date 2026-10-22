@@ -172,7 +172,13 @@ test("Style.md in any case is the style file, including under a subfolder", asyn
   assert.equal(glass.find((f) => f.rel.startsWith("apps/other/")).status, "FAIL");
   const owned = fs.readFileSync(path.join(d, "Style.md"), "utf8");
   const log = init(d, { hook: false });
-  assert.equal(fs.existsSync(path.join(d, "STYLE.md")), false);
+  // Not existsSync(d/STYLE.md): on a case-insensitive filesystem (macOS default)
+  // that answers `true` for the pre-existing Style.md, so the assertion could not
+  // tell "init created nothing" from "init overwrote it" — it failed on macOS while
+  // the behaviour was correct. readdir returns the real on-disk name, so this
+  // observes what actually happened on either filesystem.
+  const styleEntries = fs.readdirSync(d).filter((f) => /^style\.md$/i.test(f));
+  assert.deepEqual(styleEntries, ["Style.md"], "init created or renamed a style file");
   assert.ok(log.some((l) => l.startsWith("Style.md: exists")));
   assert.equal(fs.readFileSync(path.join(d, "Style.md"), "utf8"), owned);
   assert.ok(fs.readFileSync(path.join(d, "apps/web/Style.md"), "utf8").includes("nested blur"));
@@ -278,6 +284,43 @@ test("symlinks are scanned once, cycles end, binary and oversized files are name
   assert.ok(ids(scanned).has("purple-gradient"));
 });
 
+// A marked file used to vanish without a word, so a scan that read nothing still said "OK".
+// Every exclusion is named, and a marked file is an exclusion like any other.
+test("a file marked non-slop-skip-file is named, not silently dropped", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "a.css"), "body{background:linear-gradient(#6366f1,#a855f7)}\n");
+  fs.writeFileSync(path.join(d, "marked.css"), "// non-slop-skip-file: not UI\nbody{font-family:Inter,sans-serif}\n");
+  const res = await scanTarget(d);
+  assert.equal(res.filesScanned, 1, "only the unmarked file is scanned");
+  assert.ok(ids(res).has("purple-gradient"), "the real file is still judged");
+  assert.ok(!ids(res).has("default-font"), "the marked file is not scored");
+  assert.match(res.note.join("\n"), /marked\.css \(marked non-slop-skip-file\)/);
+  // The marker hides a file from the report, never from the reader: including examples scans it.
+  const prev = process.env.NON_SLOP_INCLUDE_EXAMPLES;
+  process.env.NON_SLOP_INCLUDE_EXAMPLES = "1";
+  try {
+    const forced = await scanTarget(d);
+    assert.equal(forced.filesScanned, 2, "the marked file is scanned when exclusions are lifted");
+    assert.ok(ids(forced).has("default-font"), "its hit is still found, and was never hidden by the marker");
+  } finally { if (prev === undefined) delete process.env.NON_SLOP_INCLUDE_EXAMPLES; else process.env.NON_SLOP_INCLUDE_EXAMPLES = prev; }
+});
+
+// Example fixtures stay silent: they are deliberate test data, not something the scan missed.
+test("an example fixture is excluded quietly, and INCLUDE_EXAMPLES brings it back", async () => {
+  const d = tmp();
+  fs.writeFileSync(path.join(d, "e.html"), "<!-- non-slop-example --><html><body><h1>x</h1></body></html>\n");
+  const res = await scanTarget(d);
+  assert.equal(res.filesScanned, 0);
+  assert.doesNotMatch(res.note.join("\n"), /e\.html/);
+  const prev = process.env.NON_SLOP_INCLUDE_EXAMPLES;
+  process.env.NON_SLOP_INCLUDE_EXAMPLES = "1";
+  try {
+    const forced = await scanTarget(d);
+    assert.equal(forced.filesScanned, 1);
+    assert.ok(ids(forced).has("html-lang"), "the fixture is scanned when examples are included");
+  } finally { if (prev === undefined) delete process.env.NON_SLOP_INCLUDE_EXAMPLES; else process.env.NON_SLOP_INCLUDE_EXAMPLES = prev; }
+});
+
 test("a local scan does not call fetch", async () => {
   const orig = globalThis.fetch;
   let calls = 0;
@@ -343,7 +386,13 @@ test("init does not install a hook whose path resolves outside the project", () 
 test("a symlink used as the scan root into /proc, /sys, /dev, /run, or / is named and not walked", { timeout: 8000 }, async () => {
   const d = tmp();
   const targets = ["/proc", "/sys", "/dev", "/run", "/"].filter((p) => fs.existsSync(p));
-  assert.ok(targets.includes("/proc") && targets.includes("/"));
+  // "/" on every platform; /proc, /sys, /dev and /run only where the OS has them.
+  // Requiring /proc outright made this test Linux-shaped and it failed on macOS
+  // before exercising anything. The guardrail it protects — a symlink root into a
+  // system directory must be named, not walked — is worth checking wherever
+  // those directories exist, and "/" always does.
+  assert.ok(targets.includes("/"), "expected / to be a candidate target");
+  assert.ok(targets.length >= 2, `expected at least one system directory beyond /, got ${targets.join(", ")}`);
   for (const t of targets) {
     const link = path.join(d, "link-" + (t === "/" ? "root" : t.slice(1)));
     fs.symlinkSync(t, link);
@@ -564,6 +613,15 @@ test("a 1 MB line of mismatched quote tags scans in under a second", { timeout: 
   assert.ok(res.findings.some((f) => f.id === "generic-promise" && f.status === "REVIEW" && /to new heights/i.test(f.detail)), "a stray end tag does not swallow the sentence after it");
 });
 
+test("the skip marker is documented, and documented as a reported exclusion", () => {
+  const detect = fs.readFileSync(path.join(ROOT, "skills/detect/SKILL.md"), "utf8");
+  const readme = fs.readFileSync(path.join(ROOT, "README.md"), "utf8");
+  for (const [name, doc] of [["detect", detect], ["README", readme]]) {
+    assert.match(doc, /non-slop-skip-file/, `${name} must document the marker`);
+    assert.match(doc, /not scanned/, `${name} must say the scan names what it skipped`);
+  }
+});
+
 test("the writing docs keep the principle, the refusal, and the trial the scanner cannot judge", () => {
   const writing = fs.readFileSync(path.join(ROOT, "skills/writing/SKILL.md"), "utf8");
   const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");
@@ -599,9 +657,19 @@ test("install.sh refuses a hostile ref and an old Node, and installs from the ta
   execFileSync("git", ["init", "-q"], { cwd: d });
   fs.writeFileSync(path.join(d, "AGENTS.md"), "# Keep\n");
   fs.writeFileSync(path.join(d, "notes.txt"), "do not lose\n");
+  // GitHub serves the repo as `Non-Slop-<sha>/…`, and install.sh globs
+  // `Non-Slop-*`, so the fixture needs that top-level directory. Built by staging
+  // a directory rather than GNU `tar --transform`, which bsdtar (macOS, and
+  // anything BSD-based) rejects with "Option --transform is not supported".
   const pack = tmp();
   const tarball = path.join(pack, "src.tgz");
-  execFileSync("tar", ["-czf", tarball, "-C", ROOT, "--exclude", ".git", "--transform", "s,^,Non-Slop-test/," , "."]);
+  const stageRoot = path.join(pack, "Non-Slop-test");
+  fs.mkdirSync(stageRoot, { recursive: true });
+  fs.cpSync(ROOT, stageRoot, {
+    recursive: true,
+    filter: (src) => path.basename(src) !== ".git",
+  });
+  execFileSync("tar", ["-czf", tarball, "-C", pack, "Non-Slop-test"]);
   const curlBin = path.join(pack, "bin");
   fs.mkdirSync(curlBin);
   fs.writeFileSync(path.join(curlBin, "curl"), `#!/bin/sh\nout=""\nwhile [ $# -gt 0 ]; do\n  if [ "$1" = "-o" ]; then out=$2; shift 2; continue; fi\n  shift\ndone\ncp ${JSON.stringify(tarball)} "$out"\n`);
