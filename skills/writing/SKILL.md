@@ -54,6 +54,10 @@ The scanner flags a few promise-shaped phrases: a world of colour or possibiliti
 - **AI-likeness percentages.** A meter that says a text is some percent "AI" has no verified basis. Do not add one, cite one, or treat one as evidence. A sentence a person can point at is the evidence.
 - **Mistakes added so the text looks human.** A planted typo, a fake stumble, or roughness put in on purpose is a costume. Voice is what the writer actually does, including a clean sentence.
 
+## The laws behind the edit
+
+`skills/writing-laws/` holds the rules this skill applies: what holds, what is folklore, and when a deliberate break is allowed. Read it when the smallest edit is not obvious, when a style rule and the reader's need disagree, or when a sentence breaks a rule on purpose and must be left alone. The short form: name the actor; spell out jargon on first use; find the verb inside a noun-shaped abstraction; give the familiar before the new; and treat the passive as a camera angle, not a defect — it is only a question when the cause is missing.
+
 ## What we did not import
 
 Peter Yang's no-ai-slop skill (MIT) is the source of the review-before-rewriting workflow: quote the line, say what is wrong, propose a short fix, do not rewrite on a detect pass, do not score the draft. Jakub Krehel's interface skill is not a writing source; the small-interaction checks live in `skills/review/`. Rakesh Mahanti's carousel is the idea source for the principle at the top of this file, credited as a link only.

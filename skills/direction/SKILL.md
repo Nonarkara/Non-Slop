@@ -38,6 +38,8 @@ Then **review the plan against the defaults.** For each decision ask: would I ha
 
 Semantic colours (`--ink`, `--ground`, `--accent`, `--danger`, data domains), spacing scale (4/8-based), type scale (≤8 sizes, a stated ratio), one radius system (one radius, or none), shadow policy (≤3 per screen, only for things that float), states for every control (hover, focus-visible, active, disabled, loading, empty, error), breakpoints (start narrow: 320, 390, 1024, 1440), motion (≤250 ms, transform/opacity, `prefers-reduced-motion`). Contrast is checked on every real background (WCAG AA: 4.5:1 text, 3:1 large text and UI). If the colour work uses Palette, keep its roles and unequal proportions and check colour-vision deficiency in its preview.
 
+**Every region needs a job.** Space must support reading, grouping, comparison, orientation, interaction, or deliberate emphasis — otherwise it is spatial hallucination and it goes. This is decided here, at the direction stage, not discovered later by the reviewer: a chart gets the space to read, a label gets the width of its label, a bar fits what it holds. `skills/spatial-hallucination/`.
+
 ## Step 5. Pick a preset
 
 Presets set defaults for the brief. STYLE.md and the brief override them.
