@@ -37,19 +37,19 @@ Five lines, in the PR or the design file: **who** uses it, the page's **one job*
 
 On any map or data product the map is the operating table and everything else is an instrument at its edge. The map takes **≥60% of the first desktop screen** and the first full phone screen; top and bottom bars are **≤56px**; panels are compact, docked at the edges and sized to their content; nothing covers the map on load; numbers sit next to the place they describe.
 
-## 3b. Space must have a job (MSH)
+## 3b. Space must have a job (spatial hallucination)
 
 **Spatial hallucination is when an interface invents a reason to occupy space instead of arranging around how people read, choose and act.** The test for every region: *why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer.
 
 - Space must have a job: reading, grouping, comparison, orientation, interaction, or deliberate emphasis. No job, no geometry.
-- Chrome earns its pixels: bars fit their contents; do not stack identity, title, status and controls into separate bands when they are one group.
+- Chrome earns its pixels: bars fit their useful contents; do not stack identity, title, status and controls into separate bands when they are one group.
 - Content determines size; the task determines the composition. Controls fit their labels. Reading columns fit a comfortable measure. Maps, charts and canvases get the space to operate.
 - Compose the first screen before extending the page: make the task composition work at 390 × 844 and 1440 × 900, check 1024 too. Never force a fit by clipping, shrinking readable text, or nesting scroll areas.
 - Hierarchy must survive the viewport: one thing wins, then a second, then a third.
 - Relationships determine distance: related controls together, less space within a group than between groups.
-- Whitespace is allowed; unexplained space is not.
+- Every image earns its role: decide the role before the size.
 
-**When you find SH, massacre.** Fix the first unnecessary expansion; do not decorate the consequences. Preserve the product — live maps, charts, canvases, earned content, keyboard access, readable type, usable targets. A pass needs evidence at 390, 1024 and 1440 px: chrome cost, task visibility, geometry failures, hierarchy, preservation. If rendering was unavailable, report **unverified**. `skills/spatial-hallucination/`.
+**When you find SH, massacre.** Fix the first unnecessary expansion; do not decorate the consequences. Preserve the product — live maps, charts, canvases, earned content, keyboard access, readable type, usable targets. A pass needs evidence at 390, 1024 and 1440 px: chrome cost, task visibility, geometry failures, hierarchy, preservation. If rendering was unavailable, report **unverified**. Full law: `ANTI-SPATIAL-HALLUCINATION.md` (packaged as `skills/spatial-hallucination/`).
 
 ## 4. Languages
 

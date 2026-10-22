@@ -22,7 +22,6 @@ Use this guide when designing or reviewing composition, image placement, respons
 8. [A working procedure](#8-a-working-procedure)
 9. [Evidence and independent review](#9-evidence-and-independent-review)
 10. [Reusable brief and report](#10-reusable-brief-and-report)
-
 ## 1. The spatial contract
 
 Before choosing columns, write the page's reader, task and sequence of attention. Identify the thing that must win: a map, a photograph, a question, a letter, an actionable warning or a specific choice.
@@ -56,6 +55,39 @@ Spatial hallucination is not a synonym for whitespace, asymmetry or a large imag
 | All empty space is filled with icons, badges or extra pictures. | Decoration hides the unanswered spatial decision. | Remove the fillers and explain the remaining space. |
 
 A small picture can be exactly right. It must have a specific relationship to nearby content, a readable subject at its rendered size and a caption/credit proportionate to its role. Small is not the defect; arbitrary is.
+
+### How the failure spreads
+
+The same chain, wherever it starts:
+
+1. An element expands without a task reason.
+2. Its row, header or panel grows to accommodate it.
+3. Useful content falls below the first screen.
+4. Related information and actions lose their shared context.
+5. The user scrolls to reconstruct a picture the layout should have provided.
+6. Repeated equal-sized blocks flatten hierarchy and make the journey monotonous.
+
+Fix the first unnecessary expansion. Do not decorate the consequences.
+
+### 2b. The geometry symptoms
+
+The table above reads the failure through images and actions. This one reads it through the frame — chrome, controls, columns and rhythm. Same failure, different surface.
+
+| Symptom | What failed | Smallest useful repair |
+|---|---|---|
+| Gigantic top bar | Identity and navigation consume space needed by the task | Fit the bar to its useful contents; combine redundant rows |
+| Unjustified gaps | Space stretches to satisfy a container | Use deliberate group spacing; remove unused tracks |
+| Orphan photo or block | An element sits beside an unexplained void | Recompose its relationship to the content |
+| Scattered actions | Related controls occupy separate rows or distant edges | Place them together at the decision point |
+| Equal-weight everything | Repetition replaces hierarchy | Establish a first, second and third reading priority |
+| Accidental wrapping | Navigation breaks wherever width happens to run out | Choose deliberate groups and a responsive transition |
+| Expensive small decision | A short task requires a long scroll | Bring the evidence and action into one useful view |
+| Inflated controls | Short labels inherit container-sized boxes | Size to label, padding and usable interaction target |
+| Stretched cards | Short content inherits the tallest sibling's height | Let content size itself unless comparison requires alignment |
+| Empty hero or spacer | A section exists to manufacture importance | Remove the section, or give real content its place |
+| Overlapping chrome | Fixed or sticky regions obscure the work | Account for the area they occupy and reduce their footprint |
+
+These are symptoms to investigate in the rendered interface. A CSS property alone does not prove spatial hallucination.
 
 ## 3. Give every image a role
 
@@ -143,6 +175,32 @@ A page does not become usable merely because all its information is valuable. Gi
 
 Do not hide urgent instructions, critical errors, the current state or the sole primary action just to shorten a screenshot. Disclosure is for optional depth, not for concealing what the task requires now.
 
+### Chrome earns its pixels
+
+Headers, navigation, toolbars, footers and sticky bands fit their useful contents. A brand name does not earn a giant top bar. Do not stack identity, page title, status and controls into separate bands when they form one coherent group. Measure their combined footprint, including gaps and sticky offsets — a band is not free just because it is at the top.
+
+### Content determines size; the task determines the composition
+
+Controls fit their labels, padding and usable targets. Reading columns fit a comfortable measure. Maps, charts, canvases, tables and editors receive the space needed to operate and understand them; their value is not measured by text area.
+
+Inspect fixed heights, minimum heights, full-width controls, fractional tracks, equal-height cards, `space-between` and stretch alignment. Each needs a reason in the actual task. They are tools, not automatic violations.
+
+### Compose the first screen before extending the page
+
+For a compact dashboard, tool or panel, make the useful task composition work at 390 × 844 and 1440 × 900 first, and check 1024 px too. The first screen must explain where the reader is, what matters and what to do.
+
+If the task can fit one screen, make it fit. If the content earns scrolling, organise that scroll around meaningful reading or work, and keep related evidence close to its action.
+
+Never force a fit by hiding overflow, clipping content, shrinking readable text, removing earned features or moving everything into nested scroll areas.
+
+### Hierarchy must survive the viewport
+
+One thing wins, then a second, then a third. Use differences in scale, weight, placement and grouping that remain obvious when squinting at a screenshot. Within the house type system, use meaningful scale steps; do not make every element shout. The important picture must stay understandable before scrolling fragments it.
+
+### Relationships determine distance
+
+Related controls stay together. Labels stay with their values. Explanations stay with the decision they support. Use less space within a group than between groups. Alignment serves these relationships; the grid does not dictate them.
+
 ## 7. Responsive composition
 
 A breakpoint is an editorial decision about relationships, not a command to stack every box.
@@ -179,6 +237,20 @@ For a UI change, retain a small evidence set:
 - Contrast evidence for overlays, including the least favourable background region.
 - The task trial and keyboard route, with a named independent reviewer.
 - What was kept deliberately and any limits of the verification.
+
+### The five measurements
+
+For each viewport checked — 390, 1024 and 1440 px, using 390 × 844 and 1440 × 900 for the first-screen checks, and recording the height used at 1024 px — record:
+
+| Measurement | What it records |
+|---|---|
+| **Chrome cost** | Top and bottom band height and its share of the viewport, counting stacked fixed or sticky regions together |
+| **Task visibility** | Whether the primary information and the action are visible together; if scrolling is required, what content earns it |
+| **Geometry failures** | Unexplained gaps, orphan elements, inflated boxes, accidental wraps, overlap, clipping and unnecessary horizontal scrolling |
+| **Hierarchy** | The intended first, second and third reading priorities, and whether the screenshot makes them apparent |
+| **Preservation** | Important content, features, readable text, focus visibility and usable targets still working after the change |
+
+A large footprint is a prompt to investigate, not a universal numeric failure. Explain geometry in relation to the task. Source scans and successful builds cannot prove a visual pass. If rendering was unavailable, report **unverified**.
 
 For documentary assets, preserve credit and licensing information; never present an illustration as a historical photograph, a drawn map as surveyed geography, or two different scenes as a matched before/after pair. Owner permission to use a personal reference does not by itself permit publishing that photo or uploading it elsewhere. Do not generate new visual assets unless the user has authorised generation and the project's rules permit it.
 
@@ -217,5 +289,7 @@ A screenshot looking neater is not the stopping condition. The stopping conditio
 ## Provenance and maintenance
 
 “Spatial hallucination” and the governing question come from Non Arkaraprasertkul's iterative design reviews, consolidated with Codex on 20 October 2026. The Shanghai example is described without publishing private reference photos or screenshots. Accessibility checks follow the established WCAG contrast and reflow concepts; see the [W3C contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [reflow guidance](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).
+
+The geometry half of the law — the failure-spread chain, the geometry symptom table (§2b), the chrome, sizing, first-screen, hierarchy and distance rules in §6, and the five measurements in §9 — was consolidated on 22 October 2026 from the owner's standing spatial law, the same document distributed as the Massacre Spatial Hallucination law across his repos. It is the owner's own work; nothing here is borrowed.
 
 The same version is distributed in Non-Slop, Palette and Dr Non's Vibe Coding Stack. When editing a root guide and its packaged skill reference together, keep their contents identical. Preserve project-specific constraints in each integration rather than weakening this guide or silently overriding the host product.

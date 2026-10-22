@@ -34,7 +34,7 @@ Non-Slop is MIT-licensed (see LICENSE). It stands on the sources below. Unless a
 
 ## Own work
 
-The **spatial law** — Massacre Spatial Hallucination — is the owner's own design law (Non Arkaraprasertkul, 2026), written for this practice and shared across his repos. `skills/spatial-hallucination/SKILL.md` and `templates/spatial-law.md` are its first published form. It draws on nothing external; the copyediting and the evidence gate were applied when it was packaged here.
+The **spatial law** — spatial hallucination, and its standing form the owner calls Massacre Spatial Hallucination — is the owner's own design law (Non Arkaraprasertkul, 2026), written across his repos. On 20 October 2026 Codex consolidated it with him into `ANTI-SPATIAL-HALLUCINATION.md`; on 22 October 2026 the geometry half was folded into that same guide from the owner's standing law, and the packaged skill reference was regenerated from it so the two stay identical as the guide's own maintenance rule requires. Nothing in it is borrowed. `skills/spatial-hallucination/SKILL.md` and `templates/spatial-law.md` are its packaged forms.
 
 ## Refused
 
