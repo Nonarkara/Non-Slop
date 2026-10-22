@@ -30,11 +30,26 @@ Five lines, in the PR or the design file: **who** uses it, the page's **one job*
 - Something must win: one obvious first look, with a real step in size (1.5–2×), weight or colour to the next level.
 - Use real, realistically shaped content early: long Thai and German labels, missing data, errors, 10× the rows.
 - Words: verb + object on buttons, no filler ("seamless", "unlock", "supercharge"), no fake stats, testimonials or logo clouds.
+- **Words have laws.** Prose moves a precise idea into another person's head. Four moves: **land it** (the idea arrives whole — if you cannot name the thing, you have not thought it), **cut it** (nothing that is not load-bearing; the seconds you add to your own life come out of minutes in your reader's), **stage it** (you are the camera: the subject of a sentence is where the reader's attention lands first), **hold it** (one spotlight, given before new, the same action gets the same word everywhere). Name the actor; spell out jargon on first use; find the verb inside a noun-shaped abstraction. The passive voice is a camera angle, not a defect — it is only a question when the outcome is stated and the cause is missing. Some famous rules are badly stated, not forbidden ("never use the passive", "never use a fancy word", "murder your darlings"); apply one only when it makes the reader's job easier. A deliberate break is allowed when it is **local, paid off, oriented first, and named** — never on a first screen, a UI label, an error message, or safety, medical, legal or financial copy. `skills/writing-laws/`.
 - **No AI-generated visuals** unless the owner asks for one by name. Real photos, data, drawings, or nothing.
 
 ## 3. Map-first "surgical table"
 
 On any map or data product the map is the operating table and everything else is an instrument at its edge. The map takes **≥60% of the first desktop screen** and the first full phone screen; top and bottom bars are **≤56px**; panels are compact, docked at the edges and sized to their content; nothing covers the map on load; numbers sit next to the place they describe.
+
+## 3b. Space must have a job (spatial hallucination)
+
+**Spatial hallucination is when an interface invents a reason to occupy space instead of arranging around how people read, choose and act.** The test for every region: *why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer.
+
+- Space must have a job: reading, grouping, comparison, orientation, interaction, or deliberate emphasis. No job, no geometry.
+- Chrome earns its pixels: bars fit their useful contents; do not stack identity, title, status and controls into separate bands when they are one group.
+- Content determines size; the task determines the composition. Controls fit their labels. Reading columns fit a comfortable measure. Maps, charts and canvases get the space to operate.
+- Compose the first screen before extending the page: make the task composition work at 390 × 844 and 1440 × 900, check 1024 too. Never force a fit by clipping, shrinking readable text, or nesting scroll areas.
+- Hierarchy must survive the viewport: one thing wins, then a second, then a third.
+- Relationships determine distance: related controls together, less space within a group than between groups.
+- Every image earns its role: decide the role before the size.
+
+**When you find SH, massacre.** Fix the first unnecessary expansion; do not decorate the consequences. Preserve the product — live maps, charts, canvases, earned content, keyboard access, readable type, usable targets. A pass needs evidence at 390, 1024 and 1440 px: chrome cost, task visibility, geometry failures, hierarchy, preservation. If rendering was unavailable, report **unverified**. Full law: `ANTI-SPATIAL-HALLUCINATION.md` (packaged as `skills/spatial-hallucination/`).
 
 ## 4. Languages
 
@@ -51,7 +66,7 @@ node .non-slop/bin/non-slop.mjs render http://localhost:3000   # needs Playwrigh
 
 ## 6. Before merge: a different reviewer
 
-**One agent builds; a different agent or person checks. Never self-review.** The reviewer renders the page and checks keyboard paths and visible focus, contrast, tap targets ≥44px, empty/loading/error states, 320px reflow, dense real data, all three languages, the map-first rule, and whether the primary action is obvious without explanation. The review lists **what was kept on purpose** as well as what was removed. The same gate walks small interactions (readable labels, icon alignment, focus, loading, a second click that must not submit twice) and a real-task trial: a non-technical person or a different test agent finds X, downloads Y, and gets back without hints. The scanner cannot judge that trial. Gate and report format: `skills/review/SKILL.md`.
+**One agent builds; a different agent or person checks. Never self-review.** The reviewer renders the page and checks keyboard paths and visible focus, contrast, tap targets ≥44px, empty/loading/error states, 320px reflow, dense real data, all three languages, the map-first rule, and whether the primary action is obvious without explanation. The reviewer also walks the **spatial law**: at 390, 1024 and 1440 px, record chrome cost, task visibility, geometry failures, hierarchy and preservation. A clean scan is not a visual pass. The review lists **what was kept on purpose** as well as what was removed. The same gate walks small interactions (readable labels, icon alignment, focus, loading, a second click that must not submit twice) and a real-task trial: a non-technical person or a different test agent finds X, downloads Y, and gets back without hints. The scanner cannot judge that trial. Gate and report format: `skills/review/SKILL.md`.
 
 Scale the gate to the stakes: a throwaway sketch needs the scan; anything public, civic or shipped to real users needs all of it.
 

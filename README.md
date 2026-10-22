@@ -2,7 +2,7 @@
 
 **Remove the defaults nobody chose. Keep the choices somebody made.**
 
-Non-Slop is a set of rules, four skills and a small scanner that you point your AI coding agent at, so the pages it builds stop looking like every other AI-built page: the purple gradient, Inter everywhere, the centred hero with two buttons, three identical rounded cards, a shadow on every box, "seamlessly unlock". It works with Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini and anything else that reads an `AGENTS.md`.
+Non-Slop is a set of rules, six skills and a small scanner that you point your AI coding agent at, so the pages it builds stop looking like every other AI-built page: the purple gradient, Inter everywhere, the centred hero with two buttons, three identical rounded cards, a shadow on every box, "seamlessly unlock". It works with Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini and anything else that reads an `AGENTS.md`.
 
 It also protects your style. A generic "anti-AI" pass will happily delete your serif, your warm paper, your em dashes and your jokes, because AI uses them too. Here, your `STYLE.md` wins over every rule, and the scanner reports your choices as **ALLOWED** instead of failing them.
 
@@ -41,10 +41,16 @@ No install allowed? This works too: *"Before any UI work, read and follow https:
 
 ## What the agent does
 
-1. **Before coding:** a five-line brief (who, one job, what wins first, constraints, a direction taken from the subject's own world). Presets for civic dashboards, with the operational, map-first one as the default. → `skills/direction/`
-2. **While coding:** tokens first, then subtract. Empty space is a decision; small things don't grow to fill it. On the words: quote a weak sentence and propose the smallest change that helps the reader; keep the voice. → `skills/writing/`
+1. **Before coding:** a five-line brief (who, one job, what wins first, constraints, a direction taken from the subject's own world). Presets for civic dashboards, with the operational, map-first one as the default. Every region gets a job, or its space goes. → `skills/direction/`
+2. **While coding:** tokens first, then subtract. Empty space is a decision; small things don't grow to fill it. On the words: quote a weak sentence and propose the smallest change that helps the reader; keep the voice; know which style rules hold and which are folklore. → `skills/writing/`, `skills/writing-laws/`
 3. **After coding:** scan, render, look at the screenshots and the silhouette. → `skills/detect/`
-4. **Before merge:** a different agent or person runs the review gate (task, access, states, languages, map rule, small interactions) and a real-task trial the scanner cannot judge, and lists what was kept on purpose. → `skills/review/`
+4. **Before merge:** a different agent or person runs the review gate (task, access, states, languages, map rule, space, small interactions) and a real-task trial the scanner cannot judge, and lists what was kept on purpose. → `skills/review/`
+
+## Two laws that finish the job
+
+**The spatial law.** Spatial hallucination is when an interface invents a reason to occupy space instead of arranging around how people read, choose and act. *Why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer. When you find SH, massacre. This is a render-layer law: the source scanner cannot prove it, so the reviewer collects the evidence — chrome cost, task visibility, geometry failures, hierarchy, preservation — at 390, 1024 and 1440 px. The full law, including image roles and narrative composition, is [`ANTI-SPATIAL-HALLUCINATION.md`](ANTI-SPATIAL-HALLUCINATION.md), packaged as `skills/spatial-hallucination/`.
+
+**The writing laws.** Prose exists to move a precise idea into another person's head. Four moves: **land it** (the idea arrives whole), **cut it** (nothing that is not load-bearing), **stage it** (you are the camera; the subject of a sentence is where the reader's attention lands first), **hold it** (one spotlight, given before new). Some famous rules are badly stated rather than forbidden, and a deliberate break is allowed when it is local, paid off, oriented first, and named — never on a first screen, a UI label, or safety copy. Grounded in Steven Pinker's *The Sense of Style* and *The Language Instinct*. → `skills/writing-laws/`
 
 The whole contract is [AGENTS.md](AGENTS.md), about one page, short enough that agents actually follow it. The long catalog lives in the skills.
 
@@ -59,7 +65,7 @@ node .non-slop/bin/non-slop.mjs rules                        # every rule
 
 (Without installing: `npx -y github:Nonarkara/Non-Slop scan .`)
 
-- **scan** finds what's certain from source: 45 rules for fonts, colour, depth, layout, motion, icons, copy, imagery, accessibility and languages (EN/TH/ZH). Each hit has a severity (P0 anyone notices, P1 a designer notices, P2 polish), a fix, and when it's fine to keep. It judges the stack, not the item: one hit is a question; a stack is SLOP. An empty promise (`generic-promise`) is listed as **REVIEW**: it quotes the sentence, adds no points, and does not rewrite it.
+- **scan** finds what's certain from source: 47 rules for fonts, colour, depth, layout, motion, icons, copy, imagery, accessibility and languages (EN/TH/ZH). Each hit has a severity (P0 anyone notices, P1 a designer notices, P2 polish), a fix, and when it's fine to keep. It judges the stack, not the item: one hit is a question; a stack is SLOP. Three hits are listed as **REVIEW**: they quote the sentence, add no points, and do not rewrite it — an empty promise (`generic-promise`), a passive with no actor (`agentless-passive`), and a process noun hiding its verb (`zombie-noun`).
 - **render** loads the page at 1440, 1024 and 390 (plus a 320px reflow check), saves screenshots and a black-and-white **silhouette**, and measures stretch-to-fill, void, map share, bars, shadows, radii, pills, contrast, tap targets and keyboard focus. Install Playwright once with `npm i -D playwright && npx playwright install chromium`.
 - `--json` for tools, `--fail-on=P0|P1|slop|never` for gates, `--staged` for hooks. Files bigger than 8 MB, and binary files, are listed and not scored. Symlinks are followed; a link that resolves to `/`, `/proc`, `/sys`, `/dev`, or `/run` is named and not walked, including when that link is the path you scanned. `init` does not write through a symlink, or to a path that resolves outside the project (the hook included).
 
