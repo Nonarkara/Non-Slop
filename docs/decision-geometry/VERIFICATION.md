@@ -27,7 +27,7 @@ A separate read-only verifier reviewed source, screenshots and adversarial repor
 
 ## Existing host checks and limits
 
-- Non-Slop: 58 tests, 57 passed and one pre-existing optional Playwright render test skipped locally.
+- Non-Slop: 59 tests, 58 passed and one pre-existing optional Playwright render test skipped locally.
 - Skills collection: repository validation passes, with 184 skills and all local links intact. No new skill was added. Relevant installed skill entry points validate.
 - Axiom: strict audit passes with one pre-existing warning; all 16 audit tests pass.
 - MoMA: scale/prose/check reconciliation and strict example lint pass. The pre-existing origin-mechanism gap remains explicitly declared in its own law checker.
@@ -35,3 +35,7 @@ A separate read-only verifier reviewed source, screenshots and adversarial repor
 - Rams: existing strict audit reports 28 errors. An isolated archive of unmodified origin/main reports the same 28. Its existing tokens/components were not changed or waived to clear them. The new capsule's 15 tests pass independently.
 
 This verifies declared geometry invariants and the rule's installation, not taste, complete pixel occlusion, all devices, all languages or every consumer application. Product teams must choose honest task budgets and obtain independent rendered task review. Existing unrelated working-copy edits were preserved by using isolated Git worktrees.
+
+## Consumer installation proof
+
+A separate regression installs Non-Slop into a fresh project whose filesystem path contains spaces. The installed CLI accepts its valid capture and rejects an offscreen preserved map, proving that the installer carries both the policy and the executable gate.
