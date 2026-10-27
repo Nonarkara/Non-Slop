@@ -1,0 +1,154 @@
+[
+  {
+    "case": "1440x900-default",
+    "status": "BUDGETS_PASS",
+    "cases": 1,
+    "failures": [],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "1024x768-default",
+    "status": "BUDGETS_PASS",
+    "cases": 1,
+    "failures": [],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "390x844-default",
+    "status": "BUDGETS_PASS",
+    "cases": 1,
+    "failures": [],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "1280x720-default",
+    "status": "BUDGETS_PASS",
+    "cases": 1,
+    "failures": [],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "hero",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "hero",
+        "code": "maxHeight",
+        "detail": "intro: 320px violates maxHeight 130px. Keep the fixture task title and fault selector in a compact band."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "stretch",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "stretch",
+        "code": "maxHeight",
+        "detail": "map: 700px violates maxHeight 450px. Preserve the synthetic map operating area without stretching it to its sibling."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "distance",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "distance",
+        "code": "decision-gap",
+        "detail": "360.0px edge separation exceeds 32px. The next step stays immediately after the result."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "hidden",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "hidden",
+        "code": "hidden-content",
+        "detail": "map is hidden or has no operating area."
+      },
+      {
+        "case": "hidden",
+        "code": "region-not-visible",
+        "detail": "map: the preserved operating region must fit the initial viewport without a centre obstruction."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "offscreen",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "offscreen",
+        "code": "region-not-visible",
+        "detail": "map: the preserved operating region must fit the initial viewport without a centre obstruction."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "overflow",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "overflow",
+        "code": "page-overflow",
+        "detail": "1600px document exceeds 1440px viewport."
+      },
+      {
+        "case": "overflow",
+        "code": "decision-not-visible",
+        "detail": "Information and action must both fit and have an unobstructed centre on the initial screen."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "clip",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "clip",
+        "code": "clipped-content",
+        "detail": "decision action crosses a clipping/scroll ancestor."
+      },
+      {
+        "case": "clip",
+        "code": "decision-not-visible",
+        "detail": "Information and action must both fit and have an unobstructed centre on the initial screen."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  },
+  {
+    "case": "cover",
+    "status": "FAIL",
+    "cases": 1,
+    "failures": [
+      {
+        "case": "cover",
+        "code": "region-not-visible",
+        "detail": "map: the preserved operating region must fit the initial viewport without a centre obstruction."
+      },
+      {
+        "case": "cover",
+        "code": "decision-not-visible",
+        "detail": "Information and action must both fit and have an unobstructed centre on the initial screen."
+      }
+    ],
+    "scope": "Declared geometry budgets only; screenshots, task trial and independent review remain required."
+  }
+]

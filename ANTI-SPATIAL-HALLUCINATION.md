@@ -293,3 +293,13 @@ A screenshot looking neater is not the stopping condition. The stopping conditio
 The geometry half of the law — the failure-spread chain, the geometry symptom table (§2b), the chrome, sizing, first-screen, hierarchy and distance rules in §6, and the five measurements in §9 — was consolidated on 22 October 2026 from the owner's standing spatial law, the same document distributed as the Massacre Spatial Hallucination law across his repos. It is the owner's own work; nothing here is borrowed.
 
 The same version is distributed in Non-Slop, Palette and Dr Non's Vibe Coding Stack. When editing a root guide and its packaged skill reference together, keep their contents identical. Preserve project-specific constraints in each integration rather than weakening this guide or silently overriding the host product.
+
+## Task geometry: stop the expansion chain
+
+An oversized region can stretch its parent or sibling, push useful content below
+the first screen and separate evidence from its controls. Diagnose that first
+expansion. Give maps/charts an independent task-sized operating area, make tool
+headings identify the task, and keep necessary qualifications at their decision
+point. Do not repair the page by hiding controls, shrinking text or removing
+working content. [Decision geometry](https://github.com/Nonarkara/Non-Slop/blob/main/DECISION-GEOMETRY.md) defines the measurement,
+regression mutation and review evidence; its budgets are product-specific.

@@ -49,3 +49,11 @@ Not verified:
 ```
 
 **When you find SH, massacre.** Remove the invented need for space. Restore the useful picture. Make the screen help the human read, choose and act.
+## Task geometry release rule
+
+Read the core's `DECISION-GEOMETRY.md` before accepting style compliance.
+Trace oversized introductions, sibling stretch and repeated explanation bands
+that separate the evidence from its controls. Preserve operating regions and
+necessary qualifications; measure the whole task at real viewports/states,
+falsify a product-specific budget with the old failure, and close independent
+review. Source lint, palette and font compliance do not clear composition.

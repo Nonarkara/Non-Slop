@@ -3,15 +3,44 @@
   "version": "1.1.0",
   "description": "Plug-and-play anti-slop design rules, skills and a zero-dependency scanner for AI coding agents. Removes defaults nobody chose; protects choices somebody made.",
   "type": "module",
-  "bin": { "non-slop": "bin/non-slop.mjs" },
-  "files": ["ANTI-SPATIAL-HALLUCINATION.md", "AGENTS.md", "CREDITS.md", "LICENSE", "README.md", "bin", "lib", "skills", "templates", "install.sh"],
+  "bin": {
+    "non-slop": "bin/non-slop.mjs"
+  },
+  "files": [
+    "ANTI-SPATIAL-HALLUCINATION.md",
+    "AGENTS.md",
+    "CREDITS.md",
+    "LICENSE",
+    "README.md",
+    "bin",
+    "lib",
+    "skills",
+    "templates",
+    "install.sh",
+    "DECISION-GEOMETRY.md",
+    "tools/decision-geometry"
+  ],
   "scripts": {
     "test": "node --test test/*.test.mjs",
     "catalog": "node bin/non-slop.mjs rules --md > skills/detect/CATALOG.md"
   },
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "license": "MIT",
   "author": "Non Arkaraprasertkul",
-  "repository": { "type": "git", "url": "git+https://github.com/Nonarkara/Non-Slop.git" },
-  "keywords": ["ai-slop", "design", "agents", "lint", "accessibility", "claude", "cursor", "codex"]
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nonarkara/Non-Slop.git"
+  },
+  "keywords": [
+    "ai-slop",
+    "design",
+    "agents",
+    "lint",
+    "accessibility",
+    "claude",
+    "cursor",
+    "codex"
+  ]
 }

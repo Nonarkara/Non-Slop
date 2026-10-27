@@ -114,3 +114,7 @@ Built from Non Arkaraprasertkul's own anti-slop rules, Palette's slop-lint and a
 ## Anti-spatial-hallucination
 
 [The composition guide](ANTI-SPATIAL-HALLUCINATION.md) asks why each element is here, this size and this far from its neighbour. It covers image roles, narrative heroes, readable overlays, purposeful whitespace, action grouping and responsive evidence. Hero treatment is a choice to justify, not a new template.
+
+## Task geometry is a release concern
+
+Read [Decision geometry](DECISION-GEOMETRY.md) before accepting a tidy-looking layout. It traces sibling stretch, oversized introductions and separated controls back to their first unnecessary expansion. The [portable gate](tools/decision-geometry/README.md) measures task-specific budgets and preserves named operating regions. Run `non-slop geometry contract.json captures.json` after real browser capture; missing measurements fail. Passing budgets does not replace screenshots or independent task review.

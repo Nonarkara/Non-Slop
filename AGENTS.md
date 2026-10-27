@@ -1,5 +1,18 @@
 # Non-Slop: read this before any UI work
 
+<!-- decision-geometry:v1 -->
+## Task geometry before styling
+
+Read [Decision geometry](DECISION-GEOMETRY.md) for every UI composition change.
+Trace oversized introductions, sibling-stretched maps and separated controls to
+the first unnecessary expansion. Keep the task, its evidence and its next action
+legible together. Color, typography, alignment and zero horizontal overflow do
+not clear a failed composition. Preserve earned content and operating regions;
+use task-specific budgets, real viewport/state captures, a failing regression
+mutation and independent review. The guide's fixture numbers are not universal.
+<!-- /decision-geometry:v1 -->
+
+
 This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, Grok Bot) and every person, on every page, dashboard, deck or visual. If your model's habit disagrees with this file, this file wins. If this file disagrees with the repo's `STYLE.md`, `STYLE.md` wins.
 
 ## 0. Style is not slop

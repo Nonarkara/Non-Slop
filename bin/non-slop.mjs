@@ -22,6 +22,7 @@ const HELP = `non-slop — remove the defaults nobody chose; keep the choices so
   non-slop render <url|file.html>     rendered check (needs Playwright): screenshots 1440/1024/390,
                                        320px reflow, silhouette, contrast, tap targets, focus, map share
       --out=dir  --json  --style=path  --settle=ms (wait for live data; default 6000)
+  non-slop geometry <contract.json> <captures.json>  enforce declared task geometry budgets
   non-slop init [dir]                  install into a repo: .non-slop/, agent pointers, STYLE.md, pre-commit
       --update  --no-append  --no-hook  --dry-run
   non-slop hook [dir]                  (re)install only the pre-commit gate
@@ -70,6 +71,13 @@ async function main() {
     if (flag("json")) console.log(JSON.stringify(all.length === 1 ? all[0] : all, null, 2));
     if (fail && flag("staged")) console.error("\nnon-slop: commit blocked. Fix the hits, list a deliberate choice in STYLE.md, or skip once with --no-verify.");
     return fail ? 2 : 0;
+  }
+  if (cmd === "geometry") {
+    if (positional.length !== 2) { console.error("usage: non-slop geometry <contract.json> <captures.json>"); return 1; }
+    const { evaluateSuite } = await import("../tools/decision-geometry/index.mjs");
+    const result = evaluateSuite(JSON.parse(fs.readFileSync(positional[0], "utf8")), JSON.parse(fs.readFileSync(positional[1], "utf8")));
+    console.log(JSON.stringify(result, null, 2));
+    return result.status === "FAIL" ? 2 : 0;
   }
   if (cmd === "render") {
     const { renderUrl, formatRender } = await import("../lib/render.mjs");
