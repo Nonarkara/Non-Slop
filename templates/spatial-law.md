@@ -4,6 +4,12 @@
 > is `ANTI-SPATIAL-HALLUCINATION.md` (also packaged as
 > `skills/spatial-hallucination/SKILL.md`). If this file and that one
 > disagree, that one wins.
+>
+> **To measure it, not just declare it:** `templates/spatial-gate/` carries the
+> shared instrument (the same bytes in every project), the CI workflow, the
+> companion that finds text crushed into a column too narrow to read, and the
+> checklist of the traps that make a layout gate measure the wrong thing.
+> See `templates/spatial-gate/ADOPT.md`.
 
 **Spatial hallucination is when an interface invents a reason to occupy space instead of arranging things around how people read, choose and act.** The rectangles may line up perfectly while their relationships make no sense.
 

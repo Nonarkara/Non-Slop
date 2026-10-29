@@ -232,6 +232,22 @@ The page itself must not acquire accidental horizontal overflow. A map, table or
 8. **Repair causes before cosmetics.** A wrong image role will not be repaired by a smaller gap. A laundry list will not become a choice through alternating background colours. A crop cannot fix the wrong asset.
 9. **Get independent review.** A different person or agent reviews the actual render and performs the task without hints. Record what remains unverified. Documentation-only changes need a content/link/integration review; they do not require pretending a UI was rendered.
 
+### Measure it, do not just declare it
+
+This guide states the law. It does not enforce it. To enforce it, adopt the
+shared spatial gate: `templates/spatial-gate/` in this repository carries the
+instrument (the same bytes in every project, so a number means the same thing
+everywhere), the CI workflow, the falsifier that proves the gate bites, and the
+companion that finds text crushed into a column too narrow to read — a failure
+this guide can name but a hole-based gate cannot see, because a crushed column
+has no hole in it.
+
+Start at `templates/spatial-gate/ADOPT.md`. It records the traps that make a
+layout gate measure the wrong thing: a stylesheet the gate cannot find, a
+build that minifies breakpoints into a syntax the gate cannot read, a
+single-page app that renders after `load`, and `display: contents` hiding
+content from the probe so an occupied space reads as a hole.
+
 ## 9. Evidence and independent review
 
 A source scanner can identify suspicious geometry, overflow, missing semantics or contrast candidates. It cannot establish narrative meaning, judge optical balance reliably or prove an overlay safe from an average colour sample.

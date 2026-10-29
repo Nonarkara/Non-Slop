@@ -1,0 +1,76 @@
+# Spatial law: the layout gate, measured against the live site.
+#
+# Copy this into .github/workflows/ and change:
+#   - the URL, so it measures YOUR site
+#   - the baseline path, if yours is not design/spatial-baseline.json
+#
+# What this job checks: every route of the deployed site, at every width where
+# the layout changes, in a real browser, for holes, orphans, clipped text,
+# rows that break and strand one item, actions pushed to opposite edges,
+# chrome that covers the work, and pages that scroll sideways.
+#
+# Why it measures the DEPLOYED site rather than a fresh build:
+#
+#   If your build depends on files that are deliberately not vendored — shared
+#   design tokens, a private package — then CI cannot build your site, and a
+#   gate that measured a CI build would be measuring a different page from the
+#   one the world sees. Measuring the deployed site needs no build: it
+#   measures exactly what is being served.
+#
+#   If CI CAN build your site, measure the build instead and keep this as a
+#   second job.
+#
+# The build-time gate and the falsifier still run before every deploy, on the
+# machine that deploys:
+#     npm run spatial:gate      measure -> baseline -> gate
+#     npm run spatial:falsify   prove the gate bites by breaking the page
+#
+# A gate that has never been shown to fail is not a gate; it is a report.
+name: Spatial law
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  schedule:
+    # Once a day, so a page that drifts without a commit is still caught.
+    - cron: '17 5 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spatial-law
+  cancel-in-progress: true
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+      - name: Install Chrome for the measurement browser
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends chromium-browser
+          echo "CHROME_PATH=/usr/bin/chromium-browser" >> "$GITHUB_ENV"
+      - name: The deployed site has no spatial hallucination
+        run: |
+          node scripts/spatial/spatial-check.mjs \
+            --base https://example.com/ \
+            --baseline design/spatial-baseline.json
+      - name: Say plainly what this job did and did not check
+        # The falsifier needs a local copy of the site, which needs a build,
+        # which needs whatever your build depends on. So it runs in the
+        # release chain, not here. This job says so rather than letting a
+        # skipped step read as a pass.
+        run: |
+          {
+            echo "### Spatial law"
+            echo
+            echo "- Measured the DEPLOYED site, every route, every layout-changing width."
+            echo "- The build-time gate and the falsifier run in the release chain, not in CI."
+          } >> "$GITHUB_STEP_SUMMARY"
