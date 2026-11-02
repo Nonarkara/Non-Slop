@@ -36,6 +36,8 @@ Non-Slop is MIT-licensed (see LICENSE). It stands on the sources below. Unless a
 
 The **spatial law** — spatial hallucination, and its standing form the owner calls Massacre Spatial Hallucination — is the owner's own design law (Non Arkaraprasertkul, 2026), written across his repos. On 20 October 2026 Codex consolidated it with him into `ANTI-SPATIAL-HALLUCINATION.md`; on 22 October 2026 the geometry half was folded into that same guide from the owner's standing law, and the packaged skill reference was regenerated from it so the two stay identical as the guide's own maintenance rule requires. Nothing in it is borrowed. `skills/spatial-hallucination/SKILL.md` and `templates/spatial-law.md` are its packaged forms.
 
+On 3 November 2026 the same guide took two further distillations from the owner, with no recording linked and no external wording copied: a poster-hierarchy study (the glance path: visual gravity, no leapfrog, one glance, reject a stack that fights the eye) and a kinetic-grid study (extreme scale, a named grid as the condition for a wild layout, active negative space, a quiet ground with at most two saturated accents, snap and hard cuts when the UI moves). The checks are in `ANTI-SPATIAL-HALLUCINATION.md` §6, the one-page contract in `AGENTS.md`, and the review gate. This repo does not keep a separate `MSH.md` or `ANTI-SLOP.md`; those names in other repos are the same laws, already consolidated here.
+
 ## Refused
 
 These were considered and are not rules here.

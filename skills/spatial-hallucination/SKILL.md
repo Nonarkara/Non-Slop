@@ -3,7 +3,8 @@ name: non-slop-spatial-hallucination
 description: >-
   Compose relationships, not rectangles: why each element is here, this size
   and this far from its neighbour. Use when a page, panel or dashboard makes a
-  small task expensive, or when placing an image, hero or control. Layer
+  small task expensive, when placing an image, hero or control, or when a
+  heavy visual, a wild grid or UI motion has to keep a glance path. Layer
   beside review, under AGENTS.md.
 license: MIT
 ---
@@ -62,6 +63,8 @@ Spatial hallucination is not a synonym for whitespace, asymmetry or a large imag
 | A decorative hero pushes the only useful action below the first phone screen. | Scale serves the template instead of the task. | Reduce, relocate or replace it. In an operational product, let the map/data remain primary. |
 | Text flows beside a thumbnail, then a single link breaks halfway across two reading widths. | Float geometry interrupts a semantic unit. | Clear the image before the link group, or use a composition that keeps the unit together. |
 | All empty space is filled with icons, badges or extra pictures. | Decoration hides the unanswered spatial decision. | Remove the fillers and explain the remaining space. |
+| A headline, label or action sits above a full-width image, video or saturated card that outweighs it. | The eye enters on the heavy visual and does not climb back. The words sit in a dead zone. | Put the headline and the next action on the visual's exit, immediately below or beside it. |
+| A headline and its copy are split by a large visual. | The eye must leapfrog the related text. | Join the headline and the copy on the same side of the visual. |
 
 A small picture can be exactly right. It must have a specific relationship to nearby content, a readable subject at its rendered size and a caption/credit proportionate to its role. Small is not the defect; arbitrary is.
 
@@ -95,6 +98,8 @@ The table above reads the failure through images and actions. This one reads it 
 | Stretched cards | Short content inherits the tallest sibling's height | Let content size itself unless comparison requires alignment |
 | Empty hero or spacer | A section exists to manufacture importance | Remove the section, or give real content its place |
 | Overlapping chrome | Fixed or sticky regions obscure the work | Account for the area they occupy and reduce their footprint |
+| Timid scale | Title and body differ by a few pixels (16px beside 20px) | Make the title unapologetically larger; keep micro-copy as texture |
+| Filled silence | Cards, badges or a boxed logo occupy space that should push the eye | Leave the space, or give it a direction. A logo is not a card |
 
 These are symptoms to investigate in the rendered interface. A CSS property alone does not prove spatial hallucination.
 
@@ -135,7 +140,7 @@ On a phone, decide which appears first and why. An evidence image may precede th
 
 ### C. A full image with an attached reading band
 
-Use when the image needs its entire frame or cannot support an overlay. Put the short introduction or caption immediately before or after it, in a reading band that visibly belongs to the image. This is a composed alternative, not a failed overlay.
+Use when the image needs its entire frame or cannot support an overlay. The reading band visibly belongs to the image, and it is sized to the headline and the action. When the image outweighs the type, the band is the exit: immediately below or beside, where the eye goes next. A headline left above that image is in a dead zone. A short orientation line may still precede a quiet image that does not dominate. This is a composed alternative, not a failed overlay.
 
 ### D. An operational instrument with an illustrated entry point
 
@@ -166,7 +171,7 @@ Keep alt text purposeful. If adjacent live text already says everything an image
 
 ### Whitespace must perform a job
 
-A margin can protect reading measure, distinguish sections, hold a subject's gaze or create a pause. It need not be filled or numerically symmetrical. Explain its purpose in the brief; then check whether it still performs that purpose on a phone and with short content.
+A margin can protect reading measure, distinguish sections, hold a subject's gaze, create a pause, or push the eye toward the next payload. It need not be filled or numerically symmetrical. Explain its purpose in the brief; then check whether it still performs that purpose on a phone and with short content. Space that does nothing, and space filled so it will not look empty, both fail. A logo does not get a box to plug the gap. Panels stay compact; boxes still fit their content.
 
 Do not use forced equal heights, `min-height`, `space-between` or centring as a substitute for composition. These tools are valid when their behaviour is intended: touch targets need minimum dimensions, a genuine loading state may reserve media space, and a toolbar may deliberately separate navigation from account controls.
 
@@ -206,6 +211,33 @@ Never force a fit by hiding overflow, clipping content, shrinking readable text,
 
 One thing wins, then a second, then a third. Use differences in scale, weight, placement and grouping that remain obvious when squinting at a screenshot. Within the house type system, use meaningful scale steps; do not make every element shout. The important picture must stay understandable before scrolling fragments it.
 
+The step has to read in one glance. A title at 20px on a 16px body has not taken one. Make the title unapologetically large against the body. Micro-copy may be tiny and tracked, as texture, not as a second essay. Stay inside the house scale (≤8 sizes) unless `STYLE.md` says otherwise. A symbol earns its place only when it is read faster than the word; it does not replace the headline.
+
+### The glance path
+
+Visual gravity picks the entry. The eye lands on the dominant image, video or saturated card, not on whatever comes first in the DOM. Assume one glance: the weight catches, and the payload — the headline, then the action or the copy — is where the eye lands next.
+
+1. **Exit.** Critical context sits on the natural exit of that visual, usually immediately below or beside it.
+2. **No leapfrog.** A headline and its related copy stay on the same side of a visual. The eye is not asked to jump the picture to finish the sentence.
+3. **Reject a stack that fights the eye.** Flag a layout that does Title → huge image → copy when the image dwarfs the title. The visual order is image, then headline, then copy.
+4. **Reading order follows the glance.** Prefer source order that matches that path when the heading structure still makes sense. If a heading must stay first in the DOM, place it visually on the exit and check Tab order. A CSS reorder that shows one sequence and tabs another fails §7.
+5. **A map is not a poster.** On a map or data product the map is the heavy visual and the entry. The readout and the next action sit on its edge. They do not take a band above it, and they do not steal its first screen.
+
+The reading band fits its words. It is not stretched into a second hero.
+
+### A named grid is the condition for a wild layout
+
+Rotated type, overlap and other broken alignment are a constrained break, not a default. Squinting still shows the macro order: biggest header, then biggest visual, then biggest text. The break sits on a grid you can name — column, modular, axial or radial — and the brief names it. "The grid put it there" remains a failed answer when the grid hands equal space to unequal content.
+
+License the break only when all of these hold:
+
+1. **Scale.** The title contrast in the hierarchy rule above is already true.
+2. **Active negative space.** Empty space pushes the eye toward the payload. Do not fill the push with cards, badges or a boxed logo. Inside each module, panels stay compact and boxes fit their content.
+3. **Colour.** A quiet, near-monochrome ground, plus at most one or two saturated accents in that view. Each accent has a job. A data colour that already means something spends an accent; it does not earn a third decoration. `STYLE.md` may name more.
+4. **Motion, when the UI animates.** Steep easing. Reveal the skeleton, then the content. A hard cut. Non-essential motion still yields to `prefers-reduced-motion`. One moment, or none. Floaty morphs, slow crossfades and dissolves do not qualify.
+
+A first screen that is only "dynamic" fails. The licence matches a licensed break in the writing laws: local, paid off, oriented first, and named.
+
 ### Relationships determine distance
 
 Related controls stay together. Labels stay with their values. Explanations stay with the decision they support. Use less space within a group than between groups. Alignment serves these relationships; the grid does not dictate them.
@@ -218,14 +250,14 @@ At each target width, decide what must remain together, what may change order, w
 
 Check at least 1440, 1024, 390 and 320 CSS pixels, plus the product's actual device constraints. Check every promised language and text enlargement. A finite set of screenshots is evidence about those cases, not a guarantee of all devices.
 
-The page itself must not acquire accidental horizontal overflow. A map, table or deliberate sequence can have a bounded internal scroll area with usable controls. Keep DOM reading/focus order meaningful; do not repair the visual order with CSS while leaving keyboard users to visit an unrelated sequence.
+The page itself must not acquire accidental horizontal overflow. A map, table or deliberate sequence can have a bounded internal scroll area with usable controls. Keep DOM reading/focus order meaningful; do not repair the visual order with CSS while leaving keyboard users to visit an unrelated sequence. When the glance path is image, then headline, then copy, the keyboard walks that too.
 
 ## 8. A working procedure
 
 1. **State the scene and task.** Name the reader, one job, first/second/third attention, constraints and subject-specific direction. Read the existing style contract.
 2. **Map relationships before rectangles.** Mark the semantic groups, action groups, image roles and necessary whitespace. A rough annotated sketch is enough.
 3. **Use real content.** Put in the longest actual headings, translations, captions and source credits. Include sparse content, long content and missing media where applicable.
-4. **Choose the image pattern.** Shared scene, spread, attached reading band or task-first instrument. Explain the choice in one sentence. Do not pick hero by habit.
+4. **Choose the image pattern.** Shared scene, spread, attached reading band or task-first instrument. Name where the eye exits the heaviest visual, and put the headline there. Explain the choice in one sentence. Do not pick hero by habit.
 5. **Compose at actual sizes.** Set subject scale, reading measure, text-safe bounds where relevant, and crop behaviour. Use existing tokens to implement those choices.
 6. **Challenge the geometry.** Ask of each gap, boundary and alignment: what relationship does it communicate? Remove filler; preserve expressive choices that have a job.
 7. **Exercise the page.** Read it, complete the task, change language, resize, enlarge text, fail the image and traverse it by keyboard. If an overlay is used, run the full overlay gate.
@@ -256,7 +288,7 @@ For each viewport checked — 390, 1024 and 1440 px, using 390 × 844 and 1440 �
 | **Chrome cost** | Top and bottom band height and its share of the viewport, counting stacked fixed or sticky regions together |
 | **Task visibility** | Whether the primary information and the action are visible together; if scrolling is required, what content earns it |
 | **Geometry failures** | Unexplained gaps, orphan elements, inflated boxes, accidental wraps, overlap, clipping and unnecessary horizontal scrolling |
-| **Hierarchy** | The intended first, second and third reading priorities, and whether the screenshot makes them apparent |
+| **Hierarchy** | The intended first, second and third reading priorities, and whether the screenshot makes them apparent. The heaviest visual is the entry; the headline and the action sit on its exit. Title and body differ by a real scale step |
 | **Preservation** | Important content, features, readable text, focus visibility and usable targets still working after the change |
 
 A large footprint is a prompt to investigate, not a universal numeric failure. Explain geometry in relation to the task. Source scans and successful builds cannot prove a visual pass. If rendering was unavailable, report **unverified**.
@@ -271,6 +303,7 @@ For documentary assets, preserve credit and licensing information; never present
 Reader and task:
 Attention order: 1 / 2 / 3
 Image role and narrative connection:
+Glance exit (where the eye lands after the heaviest visual):
 Why this position and scale:
 What the empty space does:
 Action groups and next step:
@@ -289,6 +322,7 @@ Checked widths, languages, states and task:
 Kept on purpose:
 Finding: element → unexplained relationship → evidence → smallest repair
 Overlay gate: passed with evidence / failed / not applicable
+Glance path: exit holds the headline / leapfrog / stack fights the eye / not applicable
 Keyboard and task trial:
 Not verified:
 ```
@@ -300,6 +334,8 @@ A screenshot looking neater is not the stopping condition. The stopping conditio
 “Spatial hallucination” and the governing question come from Non Arkaraprasertkul's iterative design reviews, consolidated with Codex on 20 October 2026. The Shanghai example is described without publishing private reference photos or screenshots. Accessibility checks follow the established WCAG contrast and reflow concepts; see the [W3C contrast guidance](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) and [reflow guidance](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).
 
 The geometry half of the law — the failure-spread chain, the geometry symptom table (§2b), the chrome, sizing, first-screen, hierarchy and distance rules in §6, and the five measurements in §9 — was consolidated on 22 October 2026 from the owner's standing spatial law, the same document distributed as the Massacre Spatial Hallucination law across his repos. It is the owner's own work; nothing here is borrowed.
+
+The glance path and the constrained break (§6) were added on 3 November 2026 from two studies the owner distilled the same day: a poster-hierarchy study (visual gravity, no leapfrog, one glance, a stack that fights the eye) and a kinetic-grid study (extreme scale, a named grid as the condition for a wild layout, active negative space, a quiet ground with at most two saturated accents, snap and hard cuts when the UI moves). No recording is linked. The wording was written for this guide. It does not relax accessibility, the map-first rule, or `STYLE.md`.
 
 The same version is distributed in Non-Slop, Palette and Dr Non's Vibe Coding Stack. When editing a root guide and its packaged skill reference together, keep their contents identical. Preserve project-specific constraints in each integration rather than weakening this guide or silently overriding the host product.
 
