@@ -46,7 +46,9 @@ No install allowed? This works too: *"Before any UI work, read and follow https:
 3. **After coding:** scan, render, look at the screenshots and the silhouette. → `skills/detect/`
 4. **Before merge:** a different agent or person runs the review gate (task, access, states, languages, map rule, space, small interactions) and a real-task trial the scanner cannot judge, and lists what was kept on purpose. → `skills/review/`
 
-## Two laws that finish the job
+## Four laws that finish the job
+
+**The hierarchy pack.** Two companions to the spatial law. The [glance path](GLANCE-PATH-FOR-AI.md) says the eye enters on visual weight, not DOM order: put the headline, key number and primary action on the exit of the heaviest visual (or the map, on map products) and never make them climb back up or leapfrog. [Kinetic grids](KINETIC-GRIDS-FOR-AI.md) are how to add energy without slop: name one grid (`radial` / `axial` / `column` / `modular`), snap every element to it, leave voids on purpose, let scale and colour carry the excitement. Packaged as `skills/glance-path/` and `skills/kinetic-grid/`.
 
 **The spatial law.** Spatial hallucination is when an interface invents a reason to occupy space instead of arranging around how people read, choose and act. *Why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer. When you find SH, massacre. This is a render-layer law: the source scanner cannot prove it, so the reviewer collects the evidence — chrome cost, task visibility, geometry failures, hierarchy, preservation — at 390, 1024 and 1440 px. The full law, including image roles and narrative composition, is [`ANTI-SPATIAL-HALLUCINATION.md`](ANTI-SPATIAL-HALLUCINATION.md), packaged as `skills/spatial-hallucination/`.
 

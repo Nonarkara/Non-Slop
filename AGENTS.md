@@ -30,6 +30,8 @@ This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, G
 
 For composition, image placement, narrative heroes or unexplained gaps, read [Anti-spatial-hallucination](ANTI-SPATIAL-HALLUCINATION.md). Decide the image’s role and its relationship to the task before changing its size. The overlay gate does not relax this project’s style or access rules.
 
+For where the eye goes and what it reads first, read [Glance path](GLANCE-PATH-FOR-AI.md) (`skills/glance-path/`): weight picks the entry, the headline and primary action sit on its exit, and no related copy leapfrogs a heavy visual. For energy, rotation, overlap or diagonal type, read [Kinetic grids](KINETIC-GRIDS-FOR-AI.md) (`skills/kinetic-grid/`): name one grid (`radial` | `axial` | `column` | `modular`) before you code, snap to it, leave voids on purpose — no name, no break. Both sit under [MSH](MSH.md) and never relax it, access or the project's style.
+
 ## 1. Before you code: write the brief
 
 Five lines, in the PR or the design file: **who** uses it, the page's **one job**, the **hierarchy** (what wins first, second, third), the **constraints** (languages, devices, data), and a **visual direction taken from the subject's own world** (its materials, documents, maps, vernacular), not a style label. Then review the brief against the defaults: if you'd have made the same choice for any similar page, it's a default; change it. Method and domain presets: `skills/direction/SKILL.md`.
@@ -62,7 +64,7 @@ On any map or data product the map is the operating table and everything else is
 - Relationships determine distance: related controls together, less space within a group than between groups.
 - Every image earns its role: decide the role before the size.
 
-**When you find SH, massacre.** Fix the first unnecessary expansion; do not decorate the consequences. Preserve the product — live maps, charts, canvases, earned content, keyboard access, readable type, usable targets. A pass needs evidence at 390, 1024 and 1440 px: chrome cost, task visibility, geometry failures, hierarchy, preservation. If rendering was unavailable, report **unverified**. Full law: `ANTI-SPATIAL-HALLUCINATION.md` (packaged as `skills/spatial-hallucination/`).
+**When you find SH, massacre.** Fix the first unnecessary expansion; do not decorate the consequences. Preserve the product — live maps, charts, canvases, earned content, keyboard access, readable type, usable targets. A pass needs evidence at 390, 1024 and 1440 px: chrome cost, task visibility, geometry failures, hierarchy, preservation. If rendering was unavailable, report **unverified**. Full law: `ANTI-SPATIAL-HALLUCINATION.md` (packaged as `skills/spatial-hallucination/`). Its two companions are the glance path (`GLANCE-PATH-FOR-AI.md`, `skills/glance-path/`) and kinetic grids (`KINETIC-GRIDS-FOR-AI.md`, `skills/kinetic-grid/`); MSH's box-fit and compact-first rules outrank both.
 
 ## 4. Languages
 
