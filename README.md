@@ -2,7 +2,7 @@
 
 **Remove the defaults nobody chose. Keep the choices somebody made.**
 
-Non-Slop is a set of rules, six skills and a small scanner that you point your AI coding agent at, so the pages it builds stop looking like every other AI-built page: the purple gradient, Inter everywhere, the centred hero with two buttons, three identical rounded cards, a shadow on every box, "seamlessly unlock". It works with Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini and anything else that reads an `AGENTS.md`.
+Non-Slop is a set of rules, eight skills and a small scanner that you point your AI coding agent at, so the pages it builds stop looking like every other AI-built page: the purple gradient, Inter everywhere, the centred hero with two buttons, three identical rounded cards, a shadow on every box, "seamlessly unlock". It works with Claude Code, Codex, Cursor, Copilot, Windsurf, Gemini and anything else that reads an `AGENTS.md`.
 
 It also protects your style. A generic "anti-AI" pass will happily delete your serif, your warm paper, your em dashes and your jokes, because AI uses them too. Here, your `STYLE.md` wins over every rule, and the scanner reports your choices as **ALLOWED** instead of failing them.
 
