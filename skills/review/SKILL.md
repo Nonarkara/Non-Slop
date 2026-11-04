@@ -23,6 +23,18 @@ The brief (who, one job, hierarchy, constraints, direction), `STYLE.md`, the PR 
 
 **3b. Space (the spatial law).** At 390, 1024 and 1440 px, walk the geometry. Chrome cost: top and bottom band height and its share of the viewport, counting stacked sticky regions together. Task visibility: are the primary information and the action visible together; if scrolling is needed, what content earns it. Geometry failures: unexplained gaps, orphans, inflated boxes, accidental wraps, overlap, clipping, sideways scroll. Hierarchy: are the first, second and third reading priorities visible in the screenshot. Preservation: content, features, readable text, focus visibility and usable targets still work. Ask of every region: *why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer. Full law and evidence format: `skills/spatial-hallucination/`.
 
+**3c. Glance and kinetic constraint.** Walk the render, not the DOM. The long form is the glance path and the named-grid licence in `ANTI-SPATIAL-HALLUCINATION.md` §6. Boxes still fit their content. A symbol stays only when it is read faster than the word. A logo is not a card.
+
+- **Entry.** The heaviest image, video or saturated card is where the eye enters. Headline and primary action sit on that exit, immediately below or beside.
+- **No leapfrog.** The headline and its copy are on the same side of the visual.
+- **One glance.** Weight catches; the payload is the next landing.
+- **Stack.** Title → huge image → copy fails when the image dwarfs the title. Visual order is image, then headline, then copy. Tab order matches.
+- **Scale.** Title against body is obvious. 16px to 20px fails. Micro-copy may be small tracked texture.
+- **Grid.** Rotated type or overlap only on a named grid (column, modular, axial or radial), with biggest header, biggest visual and biggest text still obvious.
+- **Void.** Empty space pushes the eye. It is not filled with cards, badges or a boxed logo.
+- **Colour.** Quiet ground, at most two saturated accents in the view, each with a job. `STYLE.md` may name more.
+- **Motion, if any.** Steep ease, skeleton then content, hard cut. Reduced motion still holds.
+
 **4. Map-first (map or data products).** Map ≥60% of the first desktop screen and the first phone screen; bars ≤56px; nothing covers the map on load; numbers next to their places; observed vs projected states look different.
 
 **5. Access.** Keyboard: Tab reaches everything in a sensible order, focus is always visible, no traps, Esc closes things. Contrast AA on every real background (including over maps and photos). Phone targets ≥44×44px. Zoom isn't blocked; 320px reflows without sideways scroll (a genuinely 2-D map or table may scroll inside itself). Images have alt in the page's language. Reduced motion is respected. Semantic HTML: headings in order, buttons are buttons, labels on inputs.
@@ -53,7 +65,7 @@ Record who ran it, whether they finished without a hint, where they hesitated, a
 
 ## Severity
 
-**Blocking:** deleted a STYLE.md choice; task can't be finished; access failure; map rule broken on a map product; fake data; AI visuals; a second click writes twice on a public form; the real-task trial has not been run on anything public, civic, or shipped to real users. **Major:** SLOP verdict; hierarchy doesn't survive real data; a missing state; a label that cannot be read; a loading state that still accepts another submit. **Minor:** P2 polish, wording, a `generic-promise` sentence that still needs a smaller edit. A sketch may mark the trial "not run" instead of blocking.
+**Blocking:** deleted a STYLE.md choice; task can't be finished; access failure; map rule broken on a map product; fake data; AI visuals; a second click writes twice on a public form; the real-task trial has not been run on anything public, civic, or shipped to real users. **Major:** SLOP verdict; hierarchy doesn't survive real data; a headline stranded above a full-width heavy visual, or a headline split from its copy by one; a wild layout whose macro order is not obvious; a missing state; a label that cannot be read; a loading state that still accepts another submit. **Minor:** P2 polish, wording, a `generic-promise` sentence that still needs a smaller edit. A sketch may mark the trial "not run" instead of blocking.
 
 ## Report format
 
@@ -64,6 +76,7 @@ Kept on purpose: <list, with STYLE.md lines>
 Blocking: <finding — evidence (screenshot/file:line) — smallest fix>
 Major / Minor: <same>
 Small interactions: labels / icon alignment / focus / loading / double-submit — <ok or finding>
+Glance: entry / exit / leapfrog / scale / grid / colour / motion — <ok or finding>
 Trial (the scanner cannot judge this): <who ran it: non-technical person or a different test agent> — find <X>, download <Y>, return. Result: <done without hints | hesitated at … | not run>
 Not verified: <what you couldn't check, e.g. fluent Thai reading, real device>
 ```

@@ -37,7 +37,9 @@ Open the screenshots. Squint. Then check these by eye:
 
 | Tell | What it looks like | Fix |
 |---|---|---|
-| Nothing wins | Every block the same weight; squinting shows no focal point | Pick the one thing; make it 1.5–2× the next level |
+| Nothing wins | Every block the same weight; squinting shows no focal point | Pick the one thing; make it 1.5–2× the next level. A title at 20px on a 16px body has not taken the step |
+| Glance misses the words | Title above a full-bleed image, film or saturated card; copy stranded on the far side | Put the headline and the action on the visual's exit. Join the copy to the headline |
+| Dissolving motion | Slow crossfade, floaty morph, a dissolve between states | Steep ease, skeleton then content, or a hard cut. Honour reduced motion |
 | Silhouette of any SaaS page | Centred block, three equal boxes, logo strip, three tiers, four-column footer | Rebuild the hierarchy around the product's own artefact (map, table, document) |
 | Accidental void | Phone-width column on a desktop; a blank half while loading; one tall column stretching its row | Give the space to the content; show the real skeleton or last good data with its time |
 | Stretched small things | A tile with "8" at 240px wide; a lone last card spanning the row; full-width desktop buttons | Content-width; ruled strip for stats; full-width only in a phone column |

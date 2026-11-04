@@ -29,6 +29,8 @@ The test for every region:
 6. **Relationships determine distance** — related controls together; less space within a group than between groups; the grid serves the relationships, it does not dictate them.
 7. **Whitespace is allowed; unexplained space is not** — space that asks the reader to supply an intention the designer never had is spatial hallucination.
 8. **Give every image a role** — decide the role before the size. An image with no role beyond filling the second column goes.
+9. **The glance follows the weight** — the heaviest image, video or saturated card is the entry. Headline and action sit on its exit, with the copy. A title over a dwarfing image is a failed stack. Keyboard order matches the glance.
+10. **A wild layout needs a named grid** — rotated type and overlap only when biggest header, biggest visual and biggest text are obvious (column, modular, axial or radial). Empty space pushes the eye; a logo is not a card to plug it. Title scale is extreme. Quiet ground, at most two saturated accents. Motion, if any, snaps: skeleton then content, hard cut.
 
 ## The procedure
 

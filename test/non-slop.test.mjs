@@ -667,6 +667,23 @@ test("the skip marker is documented, and documented as a reported exclusion", ()
   }
 });
 
+test("the spatial guide, its skill, and the review gate keep the glance path", () => {
+  const guide = fs.readFileSync(path.join(ROOT, "ANTI-SPATIAL-HALLUCINATION.md"), "utf8");
+  const skill = fs.readFileSync(path.join(ROOT, "skills/spatial-hallucination/SKILL.md"), "utf8");
+  const body = skill.replace(/^---\n[\s\S]*?\n---\n/, "");
+  assert.equal(body, guide, "packaged spatial skill must match the guide after its frontmatter");
+  assert.match(guide, /The glance path/);
+  assert.match(guide, /A named grid is the condition for a wild layout/);
+  assert.match(guide, /poster-hierarchy study/);
+  assert.match(guide, /kinetic-grid study/);
+  assert.doesNotMatch(guide, /https?:\/\/\S*(youtube|vimeo|youtu\.be)/i);
+  const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");
+  assert.match(review, /Glance and kinetic constraint/);
+  assert.match(review, /No leapfrog/);
+  const agents = fs.readFileSync(path.join(ROOT, "AGENTS.md"), "utf8");
+  assert.match(agents, /Glance, then a licensed break/);
+});
+
 test("the writing docs keep the principle, the refusal, and the trial the scanner cannot judge", () => {
   const writing = fs.readFileSync(path.join(ROOT, "skills/writing/SKILL.md"), "utf8");
   const review = fs.readFileSync(path.join(ROOT, "skills/review/SKILL.md"), "utf8");
