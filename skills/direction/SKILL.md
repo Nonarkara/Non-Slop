@@ -32,7 +32,7 @@ Take the visual decisions from what the product is made of: its materials, docum
 - **Layout:** one sentence and a rough wireframe. Say what the empty space is for.
 - **One signature:** the single memorable, product-relevant decision. Spend boldness there; keep the rest quiet.
 
-Then **review the plan against the defaults.** For each decision ask: would I have made this for any similar page? If yes, it's a default; change it and say why. Watch for the second-order defaults too: cream + terracotta, near-black + acid green, broadsheet hairlines, tracked all-caps eyebrows, "01 / 02 / 03" on things that aren't a sequence. Any of them is fine *if the subject or STYLE.md asks for it*.
+Then **review the plan against the defaults.** For each decision ask: would I have made this for any similar page? If yes, it's a default; change it and say why. Watch for the second-order defaults too: cream + terracotta, near-black + acid green, broadsheet hairlines, tracked all-caps eyebrows, "01 / 02 / 03" on things that aren't a sequence. The eight giveaways in `MSH.md` §2b are the same kind of default. Any of them is fine *if the subject or STYLE.md asks for it*.
 
 ## Step 4. Tokens before components
 

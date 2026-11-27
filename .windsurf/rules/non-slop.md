@@ -4,6 +4,7 @@ trigger: always_on
 <!-- non-slop:start -->
 ## Design quality: Non-Slop
 Before any UI, page, dashboard, deck or visual work, read `AGENTS.md` and follow it.
+Hard bans, before any UI: the eight giveaways in `MSH.md` §2b.
 `STYLE.md` lists this repo's deliberate choices: it wins over every generic rule, and nothing listed there is stripped.
 Check with `node bin/non-slop.mjs scan .` (and `render <url>` when Playwright is installed). A different agent or person reviews; never self-review.
 <!-- non-slop:end -->
