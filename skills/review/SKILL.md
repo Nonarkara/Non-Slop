@@ -21,6 +21,8 @@ The brief (who, one job, hierarchy, constraints, direction), `STYLE.md`, the PR 
 
 **3. Hierarchy and silhouette.** Squint at 1440, 1024 and 390. One thing wins. The silhouette could only be this product. Each card, border, gradient, icon and animation earns its place; if removing one loses neither meaning nor identity, it goes.
 
+**3d. Eight giveaways.** Eyebrows, a side stripe, one italic word, display caps, Inter, a row of equal stat cards, a blurb under every title, a pulsing status dot. Law: [MSH §2b](../../MSH.md#2b-eight-giveaways-hard-bans). A choice named in `STYLE.md` stays.
+
 **3b. Space (the spatial law).** At 390, 1024 and 1440 px, walk the geometry. Chrome cost: top and bottom band height and its share of the viewport, counting stacked sticky regions together. Task visibility: are the primary information and the action visible together; if scrolling is needed, what content earns it. Geometry failures: unexplained gaps, orphans, inflated boxes, accidental wraps, overlap, clipping, sideways scroll. Hierarchy: are the first, second and third reading priorities visible in the screenshot. Preservation: content, features, readable text, focus visibility and usable targets still work. Ask of every region: *why is this here, why this size, why this far from that?* "The grid put it there" is a failed answer. Full law and evidence format: `skills/spatial-hallucination/`.
 
 **3c. Glance and kinetic constraint.** Walk the render, not the DOM. The long form is the glance path and the named-grid licence in `ANTI-SPATIAL-HALLUCINATION.md` §6. Boxes still fit their content. A symbol stays only when it is read faster than the word. A logo is not a card.

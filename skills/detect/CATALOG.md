@@ -13,6 +13,9 @@ Severity: **P0** anyone notices · **P1** a designer notices · **P2** polish. A
 | `default-font` | P1 | Primary face is a reach-for-it default (Inter, Roboto, Poppins, Geist, system-ui stack…) | Choose a face for this product and say why in STYLE.md. House starting point: Jost; Josefin Sans or League Spartan for display; Prompt or Kanit (non-looped) for Thai. | The default is the brief (e.g. system-ui so the font disappears into the OS). List it under STYLE.md → Allow → font. |
 | `tasteful-font` | P2 | The second-order 'tasteful free font' (Fraunces, Instrument Serif, Playfair…) picked because it isn't Inter | Fine if it fits the subject; otherwise choose from the subject's world and record the reason. | Listed in STYLE.md. |
 | `eyebrow-caps` | P2 | Tracked all-caps eyebrow labels used as template chrome (≥3) | Drop the label or make it carry real information in sentence case. | A wayfinding or signage system that really uses caps. |
+| `eyebrow` | P2 | Tracked all-caps kicker above a heading (FEATURES) | Drop the kicker. If the words matter, they are the heading. | A wayfinding system that really uses caps, named in STYLE.md. Three or more anywhere still hit eyebrow-caps. |
+| `display-caps` | P2 | Uppercase plus letter-spacing on a heading or a button | Sentence case. Caps stay for a real acronym or a code. | The tracking is the signage, named in STYLE.md. |
+| `italic-word` | P1 | One italic, gradient, or accent-coloured word inside a headline | Set the headline in one voice. Size and weight make it win. | The whole title is italic, or STYLE.md names the word. A gradient on the whole line is still gradient-text. |
 | `type-scale` | P2 | More than 8 font sizes in one stylesheet (no type scale) | State a scale (e.g. 1.25 or 1.333) and map every size to a step; ≤8 sizes. | STYLE.md lists it |
 | `font-not-loaded` | P1 | A named web font is declared but never loaded (silent fallback) | Load it (@font-face, a <link>, next/font or @fontsource) or remove it from the stack. | STYLE.md lists it |
 
@@ -36,7 +39,7 @@ Severity: **P0** anyone notices · **P1** a designer notices · **P2** polish. A
 | `rounded-card-kit` | P1 | The card kit: rounded-xl/2xl + shadow on every box (≥3) | Let most content sit on the page. One radius system; most boxes need none. | STYLE.md lists it |
 | `radius-soup` | P2 | ≥5 different corner radii in one stylesheet (no radius system) | One radius (or none) for the product, plus full-round only for true pills/avatars. | STYLE.md lists it |
 | `pill-clutter` | P2 | ≥10 pills/badges in one file (house limit is 5 per screen) | Use words in running text or a plain list; keep pills for real, filterable states. | STYLE.md lists it |
-| `accent-border-card` | P2 | Coloured left-border 'accent' cards (≥2) | Drop the stripe; if it encodes a state, say the state in words too. | A real status colour system (severity, line colour) named in STYLE.md. |
+| `accent-border-card` | P2 | Coloured left-border accent on cards, callouts or list items (≥2) | Drop the stripe; if it encodes a state, say the state in words too. | A real status colour system (severity, line colour) named in STYLE.md. A 1px hairline is not this stripe. |
 | `icon-tile` | P2 | Icon in a tinted rounded square, repeated (≥3) | Drop the tile; an icon earns its place only if it is read faster than the word. | STYLE.md lists it |
 | `shadcn-untouched` | P1 | shadcn/ui theme left at its defaults | Set --primary, --radius and the neutrals from your own tokens. | STYLE.md lists it |
 
@@ -46,6 +49,8 @@ Severity: **P0** anyone notices · **P1** a designer notices · **P2** polish. A
 |---|---|---|---|---|
 | `centered-hero` | P1 | Centred hero: headline + subhead + two buttons, all centred | Open with the most characteristic thing in the subject (the map, the number, the photo, the table); one primary action. | STYLE.md lists it |
 | `card-grid-3` | P1 | Three (or four) identical cards in a row as the default composition | Vary weight: one thing leads; or use a list/table if the items are parallel. | The content really is three parallel things of equal weight (rare). |
+| `stat-cards` | P1 | Three or more equal stat cards in a row (24 · 3 · 99%) | Put the numbers in a ruled strip, or inline next to what they measure. | The content really is three parallel things of equal weight (rare), named in STYLE.md. |
+| `title-blurb` | P2 | A small muted subtitle under every heading (≥3) | One heading, then the content. A subtitle only when it carries a fact the heading does not. | Named in STYLE.md. |
 | `modal-on-load` | P1 | A modal, wall or cookie-style overlay on first load | Answer the question first; onboarding and disclaimers go inline or on demand. | A legal gate you are required to show. |
 
 ### Motion
@@ -56,6 +61,7 @@ Severity: **P0** anyone notices · **P1** a designer notices · **P2** polish. A
 | `bounce-easing` | P2 | Bounce/elastic easing | Ease-out, 150–250 ms, transform/opacity only. | A playful product where bounce is the voice (STYLE.md). |
 | `fade-up-everything` | P2 | The same fade-up-on-scroll on every section (≥4) | One orchestrated moment, or none; motion should answer an action. | STYLE.md lists it |
 | `count-up` | P2 | Count-up stat animation | Show the real number, with its date and source. | STYLE.md lists it |
+| `status-dot` | P2 | Pulsing status dot, or an All Systems Operational / AI Engine Active badge | A real state is a still mark, or plain text with a time. No pulse, no glow, no engine-active badge. | Named in STYLE.md. A skeleton pulse on a block is not a dot. A still mark for a real state stays (MSH §2.4). |
 
 ### Icons
 

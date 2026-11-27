@@ -748,3 +748,116 @@ test("install.sh refuses a hostile ref and an old Node, and installs from the ta
   assert.equal(fs.readFileSync(path.join(d, "notes.txt"), "utf8"), "do not lose\n");
   assert.ok(fs.existsSync(path.join(d, ".non-slop/bin/non-slop.mjs")));
 });
+
+const page = (body, css = "") => `<html lang="en"><head><meta name="viewport" content="width=device-width, initial-scale=1"><style>${css}a:focus-visible{outline:2px solid #0f6e56;outline-offset:2px}</style></head><body>${body}</body></html>`;
+
+test("eight giveaways are hard bans: the fixture fails, the near-misses stay quiet, older thresholds stay", async () => {
+  const hit = await scanTarget(path.join(FX, "giveaways"));
+  for (const id of ["eyebrow", "display-caps", "italic-word", "accent-border-card", "default-font", "stat-cards", "title-blurb", "status-dot"]) {
+    assert.ok(ids(hit).has(id), "missing " + id);
+  }
+  assert.ok(!ids(hit).has("eyebrow-caps"), "two tracked labels are not yet the ≥3 chrome rule");
+  assert.ok(!ids(hit).has("card-grid-3"), "equal stat siblings are stat-cards, not the rounded-card grid");
+  assert.equal(hit.summary.verdict, "SLOP");
+
+  const essay = await scanTarget(path.join(FX, "essay"));
+  const gauge = await scanTarget(path.join(FX, "gauge"));
+  for (const id of ["eyebrow", "display-caps", "italic-word", "stat-cards", "title-blurb", "status-dot"]) {
+    assert.ok(!essay.findings.some((f) => f.id === id), "essay " + id);
+    assert.ok(!gauge.findings.some((f) => f.id === id), "gauge " + id);
+  }
+
+  const quiet = tmp();
+  fs.writeFileSync(path.join(quiet, "index.html"), page(`
+    <h1 style="font-style:italic">Rain on the soi</h1>
+    <p>The water came up the soi at four, and we moved the rice.</p>
+    <h2><em>The whole title</em></h2>
+    <h3>Stations</h3>
+    <p class="text-sm text-gray-500">One blurb is a fact, not a system.</p>
+    <section class="flex">
+      <div class="stat"><b>24</b><span>cities</span></div>
+      <div class="stat"><b>3</b><span>rivers</span></div>
+    </section>
+    <p class="strip">24 cities · 3 rivers · 99% gauges, 07:10</p>
+    <p>Offline since 07:10.</p>
+    <button class="uppercase" type="button">CSV</button>
+    <div class="animate-pulse h-24 w-full rounded-md">Loading the gauge</div>
+    <article class="border-l-4">One stripe.</article>
+    <article style="border-left:1px solid #1c1915">A hairline.</article>
+  `, "h2{text-transform:uppercase}strong{letter-spacing:-0.03em}"));
+  const near = await scanTarget(quiet);
+  for (const id of ["eyebrow", "display-caps", "italic-word", "accent-border-card", "stat-cards", "title-blurb", "status-dot", "default-font", "eyebrow-caps"]) {
+    assert.ok(!near.findings.some((f) => f.id === id), "near-miss fired " + id);
+  }
+  assert.equal(near.summary.points, 0, [...near.findings].map((f) => f.id + ":" + f.status).join(","));
+  assert.equal(near.summary.verdict, "OK");
+
+  const kicker = tmp();
+  fs.writeFileSync(path.join(kicker, "index.html"), page(`<p class="kicker">Features</p><h2>Board</h2>`, ".kicker{text-transform:uppercase;letter-spacing:0.14em;font-size:12px}"));
+  const oneKicker = await scanTarget(kicker);
+  assert.ok(ids(oneKicker).has("eyebrow"));
+  assert.ok(!ids(oneKicker).has("eyebrow-caps"));
+
+  const caps = tmp();
+  fs.writeFileSync(path.join(caps, "a.css"), "h2{text-transform:uppercase;letter-spacing:0.12em}\n");
+  assert.ok(ids(await scanTarget(caps)).has("display-caps"));
+  fs.writeFileSync(path.join(caps, "a.css"), ".a{text-transform:uppercase;letter-spacing:0.2em}.b{text-transform:uppercase;letter-spacing:0.2em}\n");
+  assert.ok(!(ids(await scanTarget(caps)).has("eyebrow-caps")), "two tracked rules stay under the old threshold");
+  fs.writeFileSync(path.join(caps, "a.css"), ".a{text-transform:uppercase;letter-spacing:0.2em}.b{text-transform:uppercase;letter-spacing:0.2em}.c{text-transform:uppercase;letter-spacing:0.14em}\n");
+  assert.ok(ids(await scanTarget(caps)).has("eyebrow-caps"), "three tracked rules still hit eyebrow-caps");
+
+  const stripes = tmp();
+  fs.writeFileSync(path.join(stripes, "a.html"), page(`<article class="border-l-4">One</article>`));
+  assert.ok(!(ids(await scanTarget(stripes)).has("accent-border-card")));
+  fs.writeFileSync(path.join(stripes, "a.html"), page(`<article class="border-l-4">One</article><article class="border-l-4">Two</article>`));
+  assert.ok(ids(await scanTarget(stripes)).has("accent-border-card"), "border-l-4 still counts");
+  fs.writeFileSync(path.join(stripes, "a.html"), page(`<article class="border-l-2">One</article><li style="border-left:4px solid #0f6e56">Two</li>`));
+  assert.ok(ids(await scanTarget(stripes)).has("accent-border-card"), "a 2px stripe now counts");
+
+  const word = tmp();
+  fs.writeFileSync(path.join(word, "a.html"), page(`<h2>Read the <span class="bg-clip-text text-transparent bg-gradient-to-r from-sky-500 to-emerald-500">river</span> first</h2>`));
+  const gradient = await scanTarget(word);
+  assert.ok(ids(gradient).has("italic-word"));
+  assert.ok(ids(gradient).has("gradient-text"), "a gradient word still hits gradient-text");
+  fs.writeFileSync(path.join(word, "a.html"), page(`<h3>One <span class="text-emerald-600">word</span> here</h3>`));
+  const accent = await scanTarget(word);
+  assert.ok(ids(accent).has("italic-word"));
+  assert.ok(!ids(accent).has("default-purple"));
+
+  const dot = tmp();
+  fs.writeFileSync(path.join(dot, "a.css"), "@keyframes pulse{50%{opacity:.4}}.dot{animation:pulse 2s infinite;width:8px;height:8px;border-radius:9999px}@media (prefers-reduced-motion:reduce){.dot{animation:none}}\n");
+  assert.ok(ids(await scanTarget(dot)).has("status-dot"));
+  const badge = tmp();
+  fs.writeFileSync(path.join(badge, "a.html"), page(`<p><span class="badge"></span> AI Engine Active</p>`));
+  assert.ok(ids(await scanTarget(badge)).has("status-dot"));
+
+  const cards = tmp();
+  fs.writeFileSync(path.join(cards, "index.html"), page(`<section class="grid grid-cols-3"><div class="rounded-xl shadow-md p-6 bg-white">One</div><div class="rounded-xl shadow-md p-6 bg-white">Two</div><div class="rounded-xl shadow-md p-6 bg-white">Three</div></section>`));
+  const grid = await scanTarget(cards);
+  assert.ok(ids(grid).has("card-grid-3"));
+  assert.ok(!ids(grid).has("stat-cards"));
+
+  const allowed = tmp();
+  fs.copyFileSync(path.join(FX, "giveaways/index.html"), path.join(allowed, "index.html"));
+  const banIds = ["eyebrow", "display-caps", "italic-word", "accent-border-card", "default-font", "stat-cards", "title-blurb", "status-dot"];
+  fs.writeFileSync(path.join(allowed, "STYLE.md"), "## Allow\n" + banIds.map((id) => `- rule ${id}: named choice`).join("\n") + "\n");
+  const kept = await scanTarget(allowed);
+  for (const id of banIds) assert.equal(kept.findings.find((f) => f.id === id).status, "ALLOWED", id);
+  assert.equal(kept.summary.points, 0, [...kept.findings].filter((f) => f.status === "FAIL").map((f) => f.id).join(","));
+  assert.equal(kept.summary.verdict, "OK");
+});
+
+test("the eight giveaways are in the law, and the agent files point at them", () => {
+  const msh = fs.readFileSync(path.join(ROOT, "MSH.md"), "utf8");
+  assert.match(msh, /## 2b\. Eight giveaways \(hard bans\)/);
+  for (const name of ["Eyebrows", "Colour down one side", "One italic word", "All caps for looks", "Inter on everything", "Too many cards", "A blurb under every title", "Blinking status dots"]) {
+    assert.match(msh, new RegExp(name.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  }
+  for (const name of ["Mitchell Romney", "Johannes Nagl", "Phil Whitehouse", "Austin Ballard", "sadeeqah S.", "Bryce Galbraith"]) {
+    assert.match(msh, new RegExp(name));
+    assert.match(fs.readFileSync(path.join(ROOT, "CREDITS.md"), "utf8"), new RegExp(name));
+  }
+  assert.match(fs.readFileSync(path.join(ROOT, "AGENTS.md"), "utf8"), /MSH\.md#2b-eight-giveaways-hard-bans/);
+  assert.match(fs.readFileSync(path.join(ROOT, "CLAUDE.md"), "utf8"), /eight giveaways in `MSH\.md` §2b/);
+  assert.match(fs.readFileSync(path.join(ROOT, ".cursor/rules/non-slop.mdc"), "utf8"), /eight giveaways in `MSH\.md` §2b/);
+});

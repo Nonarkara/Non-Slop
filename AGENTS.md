@@ -15,6 +15,8 @@ mutation and independent review. The guide's fixture numbers are not universal.
 
 This applies to every agent (Claude, Codex, Cursor, Copilot, Windsurf, Gemini, Grok Bot) and every person, on every page, dashboard, deck or visual. If your model's habit disagrees with this file, this file wins. If this file disagrees with the repo's `STYLE.md`, `STYLE.md` wins.
 
+Hard bans, before any UI: the eight giveaways in [MSH §2b](MSH.md#2b-eight-giveaways-hard-bans). Banned as a default; a choice named in `STYLE.md` stays.
+
 ## 0. Style is not slop
 
 **Slop is a default nobody chose. Style is a choice somebody made.** Remove the first; protect the second.

@@ -38,7 +38,7 @@ This document is **layout MSH**. Map rules stay in the FloodDash spatial playboo
 1. **Boxes fit content.** Padding ≈ 0.5–1.5× line-height. No fixed/`min-height` that leaves a void under short text. A control/chip/stat is ≤ **2×** content width and ≤ **1.6×** content height.
 2. **No void.** No flat empty region over ~⅓ of the first screen. No phone-width column floating on desktop. No blank half while loading (skeleton or last-good data + timestamp).
 3. **Compact first.** If the task fits one screen at 390×844 and 1440×900, make it fit. Scroll is for **interesting depth**, not for recovering from fat chrome.
-4. **Symbols over prose** when the meaning is unambiguous (status dots, gauge marks, ↑↓, icons with `aria-label`). Never emoji-as-icon decoration.
+4. **Symbols over prose** when the meaning is unambiguous (a still status mark, gauge marks, ↑↓, icons with `aria-label`). A pulsing dot is a giveaway (§2b). Never emoji-as-icon decoration.
 5. **Logos never boxed.** No chip, border, shadow, or backing panel around a logo.
 6. **Something must win.** One focal point; real contrast (≥1.5–2× type step). No equal card grids by default.
 7. **Subtract before you add.** Before a new box/shadow/radius/badge, remove one. House caps unless `STYLE.md` overrides: ≤15 cards (composition discipline), ≤3 shadows, one radius system, ≤5 pills, ≤8 font sizes, no decorative gradient/glass, no first-load modal, light by default.
@@ -47,6 +47,21 @@ This document is **layout MSH**. Map rules stay in the FloodDash spatial playboo
 10. **Never self-review.** Builder ≠ auditor.
 
 Banned AI-slop faces as primary: Inter, Poppins, Montserrat, Roboto, Open Sans, Lato, DM Sans, Space Grotesk, Geist, Plus Jakarta Sans, Manrope, Nunito, naked `system-ui` as the design face. Prefer Jost / Josefin / League Spartan; Thai Prompt or Kanit; ≤2 families.
+
+## 2b. Eight giveaways (hard bans)
+
+Banned as a default, on every page an agent builds. A product's `STYLE.md` may name one as a deliberate choice. Non's own signature is not slop: judge, and leave a named choice in place. The list is Mitchell Romney's graphic "Ban these before AI designs your site" (2026). The graphic names Johannes Nagl, Phil Whitehouse, Austin Ballard, sadeeqah S. and Bryce Galbraith. The wording here is ours. The image is not reproduced. [CREDITS.md](CREDITS.md).
+
+1. **Eyebrows.** A small tracked, all-caps kicker above a heading ("FEATURES"). Drop it, or let the words be the heading. Scanner: `eyebrow`. Three or more anywhere still hit `eyebrow-caps`.
+2. **Colour down one side.** An accent bar, a `border-left` stripe, on a card, a callout, or a list item. A 1px hairline is a hairline. Scanner: `accent-border-card` (two or more; a 2px stripe counts).
+3. **One italic word.** A single italic, gradient, or accent-coloured word in a headline ("Build *faster* with AI"). The whole title in italic is a choice. Scanner: `italic-word`. A gradient fill on the whole line is still `gradient-text`.
+4. **All caps for looks.** Uppercase plus letter-spacing on a heading or a button. A real acronym or a code stays in caps. When the tracking is the look, `STYLE.md` names it. Scanner: `display-caps`.
+5. **Inter on everything.** Inter, and the other banned default faces in §2. Scanner: `default-font`.
+6. **Too many cards.** A row of equal stat or feature cards (24 · 3 · 99%). Put the numbers in a ruled strip, or inline next to what they measure. Scanner: `stat-cards` (three or more equal siblings). Three identical rounded cards are still `card-grid-3`.
+7. **A blurb under every title.** A grey one-line subtitle under every heading, section, card, or settings group. One heading, then the content. Scanner: `title-blurb` (three or more).
+8. **Blinking status dots.** A pulsing or glowing dot, or an "All Systems Operational" / "AI Engine Active" badge. A real state is a still mark (§2.4) or plain text with a time. Scanner: `status-dot`.
+
+The ids, the fixes, and when a choice stays: `skills/detect/CATALOG.md`.
 
 ---
 
